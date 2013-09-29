@@ -44,7 +44,6 @@ import com.jalvaro.velobleu.client.fragments.FavoriteListFragment;
 import com.jalvaro.velobleu.client.fragments.MapFragment;
 import com.jalvaro.velobleu.client.fragments.StationListFragment;
 import com.jalvaro.velobleu.client.fragments.Updatable;
-import com.jalvaro.velobleu.client.models.FleetVO;
 
 public class MainActivity extends SherlockFragmentActivity implements TabListener {
 
@@ -170,14 +169,13 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		mFragments = new Updatable[Tabs.values().length];
 		mIsUpdating = new AtomicBoolean();
 		mController = new MainController((VeloApp) getApplication());
-		// mFleetVO = new FleetVO();
 
 		mMapHandler = new VeloHandler((VeloApp) getApplication(), mIsUpdating) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				mLastUpdateMillis = Calendar.getInstance().getTimeInMillis();
-				onHandleMessage();
+				onHandleUpdateMessage();
 				Toast.makeText(MainActivity.this, R.string.toast_service_updated, Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
@@ -185,25 +183,25 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			@Override
 			public void handleError(Message msg) {
 				super.handleError(msg);
-				onHandleError();
+				onHandleUpdateError();
 				Toast.makeText(MainActivity.this, R.string.toast_service_not_updated, Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 		};
 	}
 
-	private void onHandleMessage() {
+	private void onHandleUpdateMessage() {
 		for (Updatable u : mFragments) {
 			if (u != null) {
-				u.onHandleMessage();
+				u.onHandleUpdateMessage();
 			}
 		}
 	}
 
-	private void onHandleError() {
+	private void onHandleUpdateError() {
 		for (Updatable u : mFragments) {
 			if (u != null) {
-				u.onHandleError();
+				u.onHandleUpdateError();
 			}
 		}
 	}

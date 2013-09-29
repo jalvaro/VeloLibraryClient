@@ -44,12 +44,12 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	}
 
 	@Override
-	public void onHandleMessage() {
+	public void onHandleUpdateMessage() {
 		setList();
 	}
 
 	@Override
-	public void onHandleError() {
+	public void onHandleUpdateError() {
 		// TODO Auto-generated method stub
 	}
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.FleetVO;
+import com.jalvaro.velobleu.client.utils.CRUDUtils;
 
 public class VeloApi {
 
@@ -21,7 +22,7 @@ public class VeloApi {
 		} catch (Exception e) {
 			// Error
 			Log.e(TAG, "getDevices - " + e.getMessage(), e);
-			throw (new VeloException());
+			throw (new VeloException(VeloException.VELOBLEU_EXCEPTION_SERVER_ERROR));
 		}
 
 		return fleetVO;

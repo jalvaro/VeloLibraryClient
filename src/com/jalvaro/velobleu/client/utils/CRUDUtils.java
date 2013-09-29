@@ -1,4 +1,4 @@
-package com.jalvaro.velobleu.client.io;
+package com.jalvaro.velobleu.client.utils;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

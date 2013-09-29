@@ -94,6 +94,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 			init();
 			// mMapController = createMapController((VeloApp)
 			// (getActivity().getApplication()));
+			onHandleUpdateMessage();
 		} catch (InflateException e) {
 			/* map is already there, just return view as it is */
 			Log.d(TAG, "Exception thrown: map is already there, just return view as it is");
@@ -118,7 +119,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	@Override
-	public void onHandleMessage() {
+	public void onHandleUpdateMessage() {
 		addStations();
 		showLastUpdate();
 		if (currentMarkerId != Constants.INIT_VALUE) {
@@ -127,7 +128,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	@Override
-	public void onHandleError() {
+	public void onHandleUpdateError() {
 		clearMarkerInfo();
 	}
 

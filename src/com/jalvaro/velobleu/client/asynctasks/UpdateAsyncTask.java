@@ -15,6 +15,6 @@ public class UpdateAsyncTask extends VeloAsyncTask {
 
 	@Override
 	protected void doInBackgroundToImplement(String... params) throws VeloException {
-		((VeloApp)getApplication()).setFleetVO(VeloApi.getFleet());
+		getApplication().setFleetVO(VeloApi.getFleet());
 	}
 }
