@@ -12,7 +12,9 @@ public class FavoriteListFragment extends ArrayListFragment {
 	protected void setList() {
 		try {
 			FleetVO favFleet = ((VeloApp) activity.getApplication()).getFavouriteFleetVO();
-			setListAdapter(new ArrayAdapter<StationVO>(getActivity(), android.R.layout.simple_list_item_1, favFleet.getStations()));
+			FleetVO fleet = ((VeloApp) activity.getApplication()).getFleetVO();
+			setListAdapter(new ArrayAdapter<StationVO>(getActivity(), android.R.layout.simple_list_item_1,
+					fleet.getSubArrayOfAvailableStationsById(favFleet)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

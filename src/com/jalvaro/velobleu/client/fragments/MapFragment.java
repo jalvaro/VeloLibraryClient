@@ -177,11 +177,9 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		FleetVO fleetVO = ((VeloApp) activity.getApplication()).getFleetVO();
 		if (fleetVO != null) {
 			map.clear();
-			for (StationVO stationVO : fleetVO.getStations()) {
-				if (stationVO.isAvailable()) {
-					map.addMarker(new MarkerOptions().position(new LatLng(stationVO.getLatitude(), stationVO.getLongitude())).icon(BitmapDescriptorFactory.fromResource(stationVO.getDrawable()))
-							.title(Integer.toString(stationVO.getId())));
-				}
+			for (StationVO stationVO : fleetVO.getSubArrayOfAvailableStations()) {
+				map.addMarker(new MarkerOptions().position(new LatLng(stationVO.getLatitude(), stationVO.getLongitude()))
+						.icon(BitmapDescriptorFactory.fromResource(stationVO.getDrawable())).title(Integer.toString(stationVO.getId())));
 			}
 
 			map.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -270,8 +268,8 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		if (currentCircle != null) {
 			currentCircle.remove();
 		}
-		currentCircle = map.addCircle(new CircleOptions().center(new LatLng(stationVO.getLatitude(), stationVO.getLongitude())).radius(60).strokeColor(0xff2CC5EF).strokeWidth(2f)
-				.fillColor(0xff2CC5EF));
+		currentCircle = map.addCircle(new CircleOptions().center(new LatLng(stationVO.getLatitude(), stationVO.getLongitude())).radius(60)
+				.strokeColor(0xff2CC5EF).strokeWidth(2f).fillColor(0xff2CC5EF));
 	}
 
 	private void updateInfoLayout(StationVO stationVO) {

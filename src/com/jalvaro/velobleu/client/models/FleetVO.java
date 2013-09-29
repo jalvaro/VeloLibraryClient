@@ -1,5 +1,8 @@
 package com.jalvaro.velobleu.client.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class FleetVO {
@@ -158,6 +161,27 @@ public class FleetVO {
 
 	public void setLocation(String location) {
 		this.mLocation = location;
+	}
+	
+	public StationVO[] getSubArrayOfAvailableStationsById(FleetVO fleetVO) {
+		List<StationVO> stations = new ArrayList<StationVO>();
+		for (StationVO stationVO : fleetVO.getStations()) {
+			StationVO stationAux = getStationById(stationVO.getId());
+			if (stationAux != null && stationAux.isAvailable()) {
+				stations.add(stationVO);
+			}
+		}
+		return stations.toArray(new StationVO[stations.size()]);
+	}
+	
+	public StationVO[] getSubArrayOfAvailableStations() {
+		List<StationVO> stations = new ArrayList<StationVO>();
+		for (StationVO stationVO : mStations) {
+			if (stationVO.isAvailable()) {
+				stations.add(stationVO);
+			}
+		}
+		return stations.toArray(new StationVO[stations.size()]);
 	}
 /*
 	public void copyValues(FleetVO fleetVO) {

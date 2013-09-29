@@ -12,7 +12,7 @@ public class StationListFragment extends ArrayListFragment {
 	protected void setList() {
 		try {
 			FleetVO fleet = ((VeloApp) activity.getApplication()).getFleetVO();
-			setListAdapter(new ArrayAdapter<StationVO>(getActivity(), android.R.layout.simple_list_item_1, fleet.getStations()));
+			setListAdapter(new ArrayAdapter<StationVO>(getActivity(), android.R.layout.simple_list_item_1, fleet.getSubArrayOfAvailableStations()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
