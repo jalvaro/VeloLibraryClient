@@ -21,6 +21,9 @@
     <string name="text_more_30_sec">More than 30 seconds...</string>
     <string name="text_1_minute_ago">1 minute ago</string>
     <string name="text_x_minutes_ago">%1$d minutes ago</string>
+    <string name="text_add_to_fav">Añadir a favoritos</string>
+    <string name="text_delete_from_fav">Eliminar de favoritos</string>
+    <string name="text_watch_at_map">Ver en el mapa</string>
     
     <string name="dummy_section_text">Section %1d is just a dummy section.</string>
 

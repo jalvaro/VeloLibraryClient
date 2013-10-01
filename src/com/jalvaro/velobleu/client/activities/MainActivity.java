@@ -190,7 +190,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		};
 	}
 
-	private void onHandleUpdateMessage() {
+	public void onHandleUpdateMessage() {
 		for (Updatable u : mFragments) {
 			if (u != null) {
 				u.onHandleUpdateMessage();
@@ -198,7 +198,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		}
 	}
 
-	private void onHandleUpdateError() {
+	public void onHandleUpdateError() {
 		for (Updatable u : mFragments) {
 			if (u != null) {
 				u.onHandleUpdateError();

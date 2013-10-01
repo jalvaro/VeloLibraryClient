@@ -23,7 +23,7 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 
 		activity = (MainActivity) getSherlockActivity();
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
@@ -36,6 +36,7 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setList();
+		registerForContextMenu(getListView());
 	}
 
 	@Override

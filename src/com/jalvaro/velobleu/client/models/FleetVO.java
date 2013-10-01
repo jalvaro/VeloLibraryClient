@@ -168,7 +168,7 @@ public class FleetVO {
 		for (StationVO stationVO : fleetVO.getStations()) {
 			StationVO stationAux = getStationById(stationVO.getId());
 			if (stationAux != null && stationAux.isAvailable()) {
-				stations.add(stationVO);
+				stations.add(stationAux);
 			}
 		}
 		return stations.toArray(new StationVO[stations.size()]);

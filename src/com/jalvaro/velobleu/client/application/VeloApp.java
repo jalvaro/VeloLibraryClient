@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.FleetVO;
+import com.jalvaro.velobleu.client.models.StationVO;
 import com.jalvaro.velobleu.client.storage.DatabaseManager;
 import com.jalvaro.velobleu.client.storage.StorageManager;
 
@@ -75,5 +76,15 @@ public class VeloApp extends Application {
 	public void setFavouriteFleetVO(FleetVO favouriteFleetVO) throws VeloException {
 		storeManager.saveFavouriteFleet(favouriteFleetVO);
 		this.favouriteFleetVO = favouriteFleetVO;
+	}
+	
+	public void addFavouriteStationVO(StationVO stationVO) throws VeloException {
+		storeManager.saveFavouriteStation(stationVO);
+		this.favouriteFleetVO = storeManager.getFavouriteFleet();
+	}
+	
+	public void deleteFavouriteStationVO(StationVO stationVO) throws VeloException {
+		storeManager.deleteFavouriteStation(stationVO.getId());
+		this.favouriteFleetVO = storeManager.getFavouriteFleet();
 	}
 }
