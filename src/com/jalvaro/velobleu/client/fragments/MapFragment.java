@@ -273,7 +273,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	private void updateInfoLayout(StationVO stationVO) {
-		streetText.setText(stationVO.getDescription());
+		streetText.setText(stationVO.toString());
 		freeSlotsText.setText(getString(R.string.text_free_slots, stationVO.getTotalFreeSlots()));
 		occupiedSlotsText.setText(getString(R.string.text_occupied_slots, stationVO.getTotalOccupiedSlots()));
 		disabledSlotsText.setText(getString(R.string.text_disabled_slots, stationVO.getDisabledSlots()));

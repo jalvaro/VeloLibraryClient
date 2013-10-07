@@ -1,7 +1,6 @@
 package com.jalvaro.velobleu.client.application;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jalvaro.velobleu.client.exceptions.VeloException;
@@ -51,21 +50,23 @@ public class VeloApp extends Application {
 
 	public void setFleetVO(FleetVO fleetVO) throws VeloException {
 		Log.d(TAG, "setFleet --> " + fleetVO.getStations().length);
-		new AsyncTask<FleetVO, Integer, Integer>() {
+		/*new AsyncTask<FleetVO, Integer, Integer>() {
 
 			@Override
 			protected Integer doInBackground(FleetVO... fleetVO) {
 				try {
 					storeManager.saveFleet(fleetVO[0]);
+					VeloApp.this.fleetVO = storeManager.getFleet();
 				} catch (VeloException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return null;
 			}
-		}.execute(fleetVO);
+		}.execute(fleetVO);*/
+		storeManager.saveFleet(fleetVO);
+		this.fleetVO = storeManager.getFleet();
 
-		this.fleetVO = fleetVO;
 		Log.d(TAG, "setFleet --> " + this.fleetVO.getStations().length);
 	}
 
@@ -77,14 +78,20 @@ public class VeloApp extends Application {
 		storeManager.saveFavouriteFleet(favouriteFleetVO);
 		this.favouriteFleetVO = favouriteFleetVO;
 	}
-	
+
 	public void addFavouriteStationVO(StationVO stationVO) throws VeloException {
+		stationVO.setFavourite(true);
+		fleetVO.getStationById(stationVO.getId()).setFavourite(true);
 		storeManager.saveFavouriteStation(stationVO);
 		this.favouriteFleetVO = storeManager.getFavouriteFleet();
 	}
-	
+
 	public void deleteFavouriteStationVO(StationVO stationVO) throws VeloException {
-		storeManager.deleteFavouriteStation(stationVO.getId());
-		this.favouriteFleetVO = storeManager.getFavouriteFleet();
+		if (stationVO != null) {
+			stationVO.setFavourite(false);
+			fleetVO.getStationById(stationVO.getId()).setFavourite(false);
+			storeManager.deleteFavouriteStation(stationVO);
+			this.favouriteFleetVO = storeManager.getFavouriteFleet();
+		}
 	}
 }

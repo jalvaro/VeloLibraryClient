@@ -16,7 +16,7 @@ public class FavouriteStationDAO extends StationDAO {
 	private static final String TABLE = "favourite_stations";
 
 	private enum Fields {
-		GID("gid"), ID("id"), NAME("name"), TIME_STAMP("timestamp");
+		GID("gid"), ID("id"), NAME("name"), POSITION("position"), TIME_STAMP("timestamp");
 
 		String name;
 
@@ -99,6 +99,8 @@ public class FavouriteStationDAO extends StationDAO {
 		StationVO stationVO = new StationVO();
 		stationVO.setId(c.getInt(1));
 		stationVO.setName(c.getString(2));
+		stationVO.setPosition(c.getInt(3));
+		stationVO.setFavourite(true);
 
 		return stationVO;
 	}
@@ -109,6 +111,7 @@ public class FavouriteStationDAO extends StationDAO {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(Fields.ID.getName(), stationVO.getId());
 		initialValues.put(Fields.NAME.getName(), stationVO.getName());
+		initialValues.put(Fields.POSITION.getName(), stationVO.getPosition());
 		initialValues.put(Fields.TIME_STAMP.getName(), Calendar.getInstance().getTimeInMillis());
 
 		return initialValues;

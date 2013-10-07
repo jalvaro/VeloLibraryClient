@@ -44,8 +44,8 @@ public class FleetVO {
 		this("", "", 0.0, 0.0, 12, "", "", "", "", new StationVO[0], "");
 	}
 
-	public FleetVO(String organization, String country, double longitude, double latitude, int zoom, String description, String web, String registrationLink, String date, StationVO[] stations,
-			String location) {
+	public FleetVO(String organization, String country, double longitude, double latitude, int zoom, String description, String web,
+			String registrationLink, String date, StationVO[] stations, String location) {
 		super();
 		this.mOrganization = organization;
 		this.mCountry = country;
@@ -139,7 +139,7 @@ public class FleetVO {
 	public StationVO getStation(int i) {
 		return mStations[i];
 	}
-	
+
 	public StationVO getStationById(int id) {
 		StationVO stationVO = null;
 		for (StationVO stVO : mStations) {
@@ -162,18 +162,20 @@ public class FleetVO {
 	public void setLocation(String location) {
 		this.mLocation = location;
 	}
-	
+
 	public StationVO[] getSubArrayOfAvailableStationsById(FleetVO fleetVO) {
 		List<StationVO> stations = new ArrayList<StationVO>();
 		for (StationVO stationVO : fleetVO.getStations()) {
 			StationVO stationAux = getStationById(stationVO.getId());
 			if (stationAux != null && stationAux.isAvailable()) {
+				// stationAux.setDescription(stationVO.getDescription());
+				stationAux.setFavourite(stationVO.isFavourite());
 				stations.add(stationAux);
 			}
 		}
 		return stations.toArray(new StationVO[stations.size()]);
 	}
-	
+
 	public StationVO[] getSubArrayOfAvailableStations() {
 		List<StationVO> stations = new ArrayList<StationVO>();
 		for (StationVO stationVO : mStations) {
@@ -183,18 +185,25 @@ public class FleetVO {
 		}
 		return stations.toArray(new StationVO[stations.size()]);
 	}
-/*
-	public void copyValues(FleetVO fleetVO) {
-		this.mOrganization = fleetVO.getOrganization();
-		this.mCountry = fleetVO.getCountry();
-		this.mLongitude = fleetVO.getLongitude();
-		this.mLatitude = fleetVO.getLatitude();
-		this.mZoom = fleetVO.getZoom();
-		this.mDescription = fleetVO.getDescription();
-		this.mWeb = fleetVO.getWeb();
-		this.mRegistrationLink = fleetVO.getRegistrationLink();
-		this.mDate = fleetVO.getDate();
-		this.mStations = fleetVO.getStations();
-		this.mLocation = fleetVO.getLocation();
-	}*/
+
+	public void setFavourites(StationVO[] stations) {
+		for (StationVO stationVO : stations) {
+			getStationById(stationVO.getId()).setFavourite(true);
+		}
+	}
+	/*
+	 * public void copyValues(FleetVO fleetVO) {
+	 * this.mOrganization = fleetVO.getOrganization();
+	 * this.mCountry = fleetVO.getCountry();
+	 * this.mLongitude = fleetVO.getLongitude();
+	 * this.mLatitude = fleetVO.getLatitude();
+	 * this.mZoom = fleetVO.getZoom();
+	 * this.mDescription = fleetVO.getDescription();
+	 * this.mWeb = fleetVO.getWeb();
+	 * this.mRegistrationLink = fleetVO.getRegistrationLink();
+	 * this.mDate = fleetVO.getDate();
+	 * this.mStations = fleetVO.getStations();
+	 * this.mLocation = fleetVO.getLocation();
+	 * }
+	 */
 }

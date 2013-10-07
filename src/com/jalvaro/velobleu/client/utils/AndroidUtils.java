@@ -18,19 +18,19 @@ public class AndroidUtils {
 		return location;
 	}
 
-	public static byte convertBooleanToByte(boolean myBoolean) {
-		byte myByte;
+	public static int convertBooleanToInt(boolean myBoolean) {
+		int myInt;
 		if (myBoolean) {
-			myByte = 1;
+			myInt = 1;
 		} else {
-			myByte = 0;
+			myInt = 0;
 		}
-		return myByte;
+		return myInt;
 	}
 
-	public static boolean convertByteToBoolean(byte myByte) {
+	public static boolean convertIntToBoolean(int myInt) {
 		boolean myBoolean;
-		if (myByte == 1) {
+		if (myInt == 1) {
 			myBoolean = true;
 		} else {
 			myBoolean = false;

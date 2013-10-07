@@ -73,7 +73,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	 */
 	private ViewPager mViewPager;
 
-	enum Tabs {
+	public enum Tabs {
 		MAP(0, R.string.title_tab_map), FAVORITES(1, R.string.title_tab_fav), STATIONS(2, R.string.title_tab_stations);
 
 		private int id;
@@ -82,6 +82,10 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		Tabs(int id, int resId) {
 			this.id = id;
 			this.resId = resId;
+		}
+		
+		public int getId() {
+			return id;
 		}
 
 		public int getResId() {
@@ -257,9 +261,9 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		}
 
 		private void initAllSections() {
-			initSection(0);
-			initSection(1);
-			initSection(2);
+			initSection(Tabs.MAP.getId());
+			initSection(Tabs.FAVORITES.getId());
+			initSection(Tabs.STATIONS.getId());
 		}
 		
 		private void initSection(int id) {

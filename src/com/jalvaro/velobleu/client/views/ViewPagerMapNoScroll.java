@@ -1,5 +1,7 @@
 package com.jalvaro.velobleu.client.views;
 
+import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
+
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,7 +25,7 @@ public class ViewPagerMapNoScroll extends ViewPager {
 			int id = ((ViewPagerMapNoScroll) v).getCurrentItem();
 			//AppSectionsPagerAdapter a = (AppSectionsPagerAdapter) ((ViewPagerMapNoScroll)v).getAdapter();
 			Log.d("CRUDUtils", "" + id);
-			if (id == 0)
+			if (id == Tabs.MAP.getId())
 				return true;
 			else
 				return false;

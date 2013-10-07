@@ -24,6 +24,6 @@ public abstract class StorageManager {
 
 	public abstract void saveFavouriteStation(StationVO stationVO) throws VeloException;
 
-	public abstract void deleteFavouriteStation(int id) throws VeloException;
+	public abstract void deleteFavouriteStation(StationVO stationVO) throws VeloException;
 
 }

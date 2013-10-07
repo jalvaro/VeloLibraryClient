@@ -42,6 +42,10 @@ public class StationVO {
 	@SerializedName("name")
 	private String mName;
 
+	private int mPosition;
+	
+	private boolean mFavourite;
+
 	public StationVO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -145,6 +149,22 @@ public class StationVO {
 	public void setName(String name) {
 		this.mName = name;
 	}
+	
+	public void setPosition(int position) {
+		this.mPosition = position;
+	}
+	
+	public int getPosition() {
+		return mPosition;
+	}
+	
+	public void setFavourite(boolean favourite) {
+		this.mFavourite = favourite;
+	}
+	
+	public boolean isFavourite() {
+		return mFavourite;
+	}
 
 	public int getDisabledSlots() {
 		return mTotalSlots - mTotalFunctionalSlots;
@@ -174,6 +194,10 @@ public class StationVO {
 	
 	@Override
 	public String toString() {
-		return getName() + " - " + getDescription();
+		String text = getDescription();
+		if (text.equals("")) {
+			text = getName();
+		}
+		return text;
 	}
 }

@@ -65,7 +65,7 @@ public class PreferencesManager extends StorageManager{
 	}
 
 	@Override
-	public void deleteFavouriteStation(int id) throws VeloException {
+	public void deleteFavouriteStation(StationVO stationVO) throws VeloException {
 		// TODO Auto-generated method stub
 		
 	}

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.StationVO;
+import com.jalvaro.velobleu.client.utils.AndroidUtils;
 
 public class StationDAO extends GenericDAO<StationVO> {
 
@@ -20,7 +21,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 
 	private enum Fields {
 		GID("gid"), DESCRIPTION("wcom"), AVAILABILITY("disp"), LAT("lat"), LNG("lng"), TOTAL_SLOTS("tc"), TOTAL_FUNCTIONAL_SLOTS("ac"), TOTAL_FREE_SLOTS(
-				"ap"), TOTAL_OCCUPIED_SLOTS("ab"), ID("id"), NAME("name"), TIME_STAMP("timestamp");
+				"ap"), TOTAL_OCCUPIED_SLOTS("ab"), ID("id"), NAME("name"), POSITION("position"), IS_FAVOURITE("is_fav"), TIME_STAMP("timestamp");
 
 		String name;
 
@@ -216,7 +217,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 			/* Enable BDD */
 			enableBDD();
 			Log.i("BDD - " + TAG, "Load records");
-			Cursor c = db.query(true, getTableName(), getStringValues(), "", null, null, null, Fields.TIME_STAMP.getName() + " desc", null);
+			Cursor c = db.query(true, getTableName(), getStringValues(), "", null, null, null, Fields.ID.getName() + " desc", null);
 			// Nos aseguramos de que existe al menos un registro
 			if (c.moveToFirst()) {
 				// Recorremos el cursor hasta que no haya mas registros
@@ -286,6 +287,8 @@ public class StationDAO extends GenericDAO<StationVO> {
 		stationVO.setTotalOccupiedSlots(c.getInt(8));
 		stationVO.setId(c.getInt(9));
 		stationVO.setName(c.getString(10));
+		stationVO.setPosition(c.getInt(11));
+		stationVO.setFavourite(AndroidUtils.convertIntToBoolean(c.getInt(12)));
 
 		return stationVO;
 	}
@@ -304,6 +307,8 @@ public class StationDAO extends GenericDAO<StationVO> {
 		initialValues.put(Fields.TOTAL_OCCUPIED_SLOTS.getName(), stationVO.getTotalOccupiedSlots());
 		initialValues.put(Fields.ID.getName(), stationVO.getId());
 		initialValues.put(Fields.NAME.getName(), stationVO.getName());
+		initialValues.put(Fields.POSITION.getName(), stationVO.getPosition());
+		initialValues.put(Fields.IS_FAVOURITE.getName(), AndroidUtils.convertBooleanToInt(stationVO.isFavourite()));
 		initialValues.put(Fields.TIME_STAMP.getName(), Calendar.getInstance().getTimeInMillis());
 
 		return initialValues;

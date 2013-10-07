@@ -27,7 +27,7 @@ public class DatabaseManager extends StorageManager {
 	public FleetVO getFleet() throws VeloException {
 		FleetVO fleetVO;
 		List<FleetVO> listFleets = fleetDAO.getAll();
-		if (listFleets != null && listFleets.get(0) != null) {
+		if (listFleets != null && listFleets.size() > 0 && listFleets.get(0) != null) {
 			fleetVO = listFleets.get(0);
 			List<StationVO> listStations = stationDAO.getAll();
 			fleetVO.setStations(listStations.toArray(new StationVO[listStations.size()]));
@@ -41,6 +41,8 @@ public class DatabaseManager extends StorageManager {
 	public void saveFleet(FleetVO fleetVO) throws VeloException {
 		fleetDAO.deleteAll();
 		fleetDAO.insert(fleetVO);
+		FleetVO favouriteFleetVO = getFavouriteFleet();
+		fleetVO.setFavourites(favouriteFleetVO.getStations());
 		synchronized (stationDAO) {
 			stationDAO.deleteAll();
 			stationDAO.insert(fleetVO.getStations());
@@ -89,14 +91,16 @@ public class DatabaseManager extends StorageManager {
 
 	@Override
 	public void saveFavouriteStation(StationVO stationVO) throws VeloException {
+		saveStation(stationVO);
 		if (favouriteStationDAO.update(stationVO) == 0) {
 			favouriteStationDAO.insert(stationVO);
 		}
 	}
 
 	@Override
-	public void deleteFavouriteStation(int id) throws VeloException {
-		favouriteStationDAO.delete(Integer.toString(id));
+	public void deleteFavouriteStation(StationVO stationVO) throws VeloException {
+		saveStation(stationVO);
+		favouriteStationDAO.delete(Integer.toString(stationVO.getId()));
 	}
 
 }

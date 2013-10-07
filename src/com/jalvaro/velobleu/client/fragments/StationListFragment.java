@@ -1,18 +1,15 @@
 package com.jalvaro.velobleu.client.fragments;
 
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.jalvaro.velobleu.client.R;
+import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 import com.jalvaro.velobleu.client.application.VeloApp;
-import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
 
@@ -20,19 +17,16 @@ public class StationListFragment extends ArrayListFragment {
 	private final static String TAG = StationListFragment.class.getName();
 
 	@Override
-	protected void setList() {
-		try {
-			FleetVO fleet = ((VeloApp) activity.getApplication()).getFleetVO();
-			setListAdapter(new ArrayAdapter<StationVO>(getActivity(), android.R.layout.simple_list_item_1,
-					fleet.getSubArrayOfAvailableStations()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	protected StationVO[] getList() {
+		FleetVO fleet = ((VeloApp) activity.getApplication()).getFleetVO();
+
+		return fleet.getSubArrayOfAvailableStations();
 	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		info.id = Tabs.STATIONS.getId();
 		menu.setHeaderTitle(((VeloApp) activity.getApplication()).getFleetVO().getStation(info.position).getDescription());
 		String[] menuItems = { getString(R.string.text_add_to_fav) };
 		for (int i = 0; i < menuItems.length; i++) {
@@ -43,28 +37,12 @@ public class StationListFragment extends ArrayListFragment {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-		int menuItemIndex = item.getItemId();
-		if (menuItemIndex == 0) {
-			Log.d(TAG, "" + info.position);
-			VeloApp app = (VeloApp) activity.getApplication();
-			FleetVO fleetVO = app.getFleetVO();
-			FleetVO favFleetVO = app.getFavouriteFleetVO();
-			StationVO stationVO = fleetVO.getStation(info.position);
-			if (favFleetVO.getStationById(stationVO.getId()) == null) {
-				try {
-					app.addFavouriteStationVO(stationVO);
-					activity.onHandleUpdateMessage();
-					Toast.makeText(activity, "Se ha a–adido en favs.", Toast.LENGTH_LONG).show();
-				} catch (VeloException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(activity, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
-					activity.onHandleUpdateError();
-					e.printStackTrace();
-				}
-			} else {
-				Toast.makeText(activity, "Ya esta en favs.", Toast.LENGTH_LONG).show();
-				activity.onHandleUpdateError();
+		if (info.id == Tabs.STATIONS.getId()) {
+			int menuItemIndex = item.getItemId();
+			if (menuItemIndex == 0) {
+				addFavouriteStation(info.position);
 			}
+			return true;
 		}
 
 		return false;
