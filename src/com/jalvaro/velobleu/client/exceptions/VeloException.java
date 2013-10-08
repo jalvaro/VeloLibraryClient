@@ -14,6 +14,7 @@ public class VeloException extends Exception {
 	public static int VELOBLEU_EXCEPTION_RADIOTAXI_REJECTED = 9;
 	public static int VELOBLEU_EXCEPTION_SUBSCRIBER_USER_PASS_ERROR = 10;
 	public static int VELOBLEU_EXCEPTION_SUBSCRIBER_VALIDATE_ERROR = 11;
+	public static int VELOBLEU_EXCEPTION_ALREADY_IN_DB = 12;
 
 	public final static int VELOBLEU_EXCEPTION_BDD_ERROR = 12;
 

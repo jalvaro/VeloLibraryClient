@@ -27,6 +27,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -37,9 +39,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jalvaro.velobleu.client.R;
 import com.jalvaro.velobleu.client.application.Constants;
 import com.jalvaro.velobleu.client.application.VeloApp;
+import com.jalvaro.velobleu.client.controllers.AddFavouriteStationController;
 import com.jalvaro.velobleu.client.controllers.Controller;
 import com.jalvaro.velobleu.client.controllers.Controller.VeloHandler;
-import com.jalvaro.velobleu.client.controllers.MainController;
+import com.jalvaro.velobleu.client.controllers.DeleteFavouriteStationController;
+import com.jalvaro.velobleu.client.controllers.UpdateController;
 import com.jalvaro.velobleu.client.fragments.FavoriteListFragment;
 import com.jalvaro.velobleu.client.fragments.MapFragment;
 import com.jalvaro.velobleu.client.fragments.StationListFragment;
@@ -58,11 +62,17 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	 */
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private AtomicBoolean mIsUpdating;
-	private MainController mController;
+	private AtomicBoolean mIsAddingFavStation;
+	private AtomicBoolean mIsDeletingFavStation;
+	private UpdateController mUpdateController;
+	private AddFavouriteStationController mAddFavStationController;
+	private DeleteFavouriteStationController mDeleteFavStationController;
 	private VeloHandler mMapHandler;
-	//private FleetVO mFleetVO;
+	private VeloHandler mAddFavStationHandler;
+	private VeloHandler mDeleteFavStationHandler;
 	private long mLastUpdateMillis = Constants.INIT_VALUE;
-	private final static String TAG = MapActivity.class.getName();
+	private OnCheckedChangeListener onCheckedChangeListener;
+	private final static String TAG = MainActivity.class.getName();
 
 	private Updatable[] mFragments;
 
@@ -83,7 +93,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			this.id = id;
 			this.resId = resId;
 		}
-		
+
 		public int getId() {
 			return id;
 		}
@@ -163,16 +173,15 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	public long getLastUpdate() {
 		return mLastUpdateMillis;
 	}
-/*
-	public FleetVO getFleetVO() {
-		return mFleetVO;
-	}
-*/
-	
+
 	private void init() {
 		mFragments = new Updatable[Tabs.values().length];
 		mIsUpdating = new AtomicBoolean();
-		mController = new MainController((VeloApp) getApplication());
+		mIsAddingFavStation = new AtomicBoolean();
+		mIsDeletingFavStation = new AtomicBoolean();
+		mUpdateController = new UpdateController((VeloApp) getApplication());
+		mAddFavStationController = new AddFavouriteStationController((VeloApp) getApplication());
+		mDeleteFavStationController = new DeleteFavouriteStationController((VeloApp) getApplication());
 
 		mMapHandler = new VeloHandler((VeloApp) getApplication(), mIsUpdating) {
 			@Override
@@ -189,6 +198,43 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 				super.handleError(msg);
 				onHandleUpdateError();
 				Toast.makeText(MainActivity.this, R.string.toast_service_not_updated, Toast.LENGTH_LONG).show();
+				setWorking(false);
+			}
+		};
+
+		mAddFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingFavStation) {
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				onHandleUpdateMessage();
+				Toast.makeText(MainActivity.this, "Se ha a–adido en favs.", Toast.LENGTH_LONG).show();
+				setWorking(false);
+			}
+
+			@Override
+			public void handleError(Message msg) {
+				super.handleError(msg);
+				onHandleUpdateError();
+				Toast.makeText(MainActivity.this, "Ya esta en favs.", Toast.LENGTH_LONG).show();
+				Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
+				setWorking(false);
+			}
+		};
+
+		mDeleteFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsDeletingFavStation) {
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				onHandleUpdateMessage();
+				Toast.makeText(MainActivity.this, "Se ha eliminado de favs.", Toast.LENGTH_LONG).show();
+				setWorking(false);
+			}
+
+			@Override
+			public void handleError(Message msg) {
+				super.handleError(msg);
+				onHandleUpdateError();
+				Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 		};
@@ -210,9 +256,21 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		}
 	}
 
+	public void addFavouriteStation(int id) {
+		if (mIsAddingFavStation.compareAndSet(false, true)) {
+			mAddFavStationController.add(mAddFavStationHandler, id);
+		}
+	}
+
+	public void deleteFavouriteStation(int id) {
+		if (mIsDeletingFavStation.compareAndSet(false, true)) {
+			mDeleteFavStationController.delete(mDeleteFavStationHandler, id);
+		}
+	}
+
 	void update() {
 		if (mIsUpdating.compareAndSet(false, true)) {
-			mController.update(mMapHandler);
+			mUpdateController.update(mMapHandler);
 		}
 	}
 
@@ -265,7 +323,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			initSection(Tabs.FAVORITES.getId());
 			initSection(Tabs.STATIONS.getId());
 		}
-		
+
 		private void initSection(int id) {
 			Tabs t = Tabs.getTabById(id);
 			if (mFragments[id] == null) {
@@ -304,5 +362,22 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			break;
 		}
 		return false;
+	}
+
+	public OnCheckedChangeListener getOnCheckedChangedListener() {
+		if (onCheckedChangeListener == null) {
+			onCheckedChangeListener = new OnCheckedChangeListener() {
+
+				@Override
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if (arg1) {
+						addFavouriteStation(arg0.getId());
+					} else {
+						deleteFavouriteStation(arg0.getId());
+					}
+				}
+			};
+		}
+		return onCheckedChangeListener;
 	}
 }

@@ -43,7 +43,7 @@ public class StationVO {
 	private String mName;
 
 	private int mPosition;
-	
+
 	private boolean mFavourite;
 
 	public StationVO() {
@@ -53,7 +53,7 @@ public class StationVO {
 	public String getDescription() {
 		String aux = mDescription;
 		try {
-			 aux = URLDecoder.decode(mDescription, "UTF-8");
+			aux = URLDecoder.decode(mDescription, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,7 +135,7 @@ public class StationVO {
 	public String getName() {
 		String aux = mName;
 		try {
-			 aux = URLDecoder.decode(mName, "UTF-8");
+			aux = URLDecoder.decode(mName, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,19 +149,19 @@ public class StationVO {
 	public void setName(String name) {
 		this.mName = name;
 	}
-	
+
 	public void setPosition(int position) {
 		this.mPosition = position;
 	}
-	
+
 	public int getPosition() {
 		return mPosition;
 	}
-	
+
 	public void setFavourite(boolean favourite) {
 		this.mFavourite = favourite;
 	}
-	
+
 	public boolean isFavourite() {
 		return mFavourite;
 	}
@@ -173,25 +173,42 @@ public class StationVO {
 	public int getDrawable() {
 		int res;
 		double groups = (double) (mTotalFunctionalSlots - 2) / 3;
-
-		if (mTotalFunctionalSlots == mTotalOccupiedSlots) {
-			res = R.drawable.ballon_5;
-		} else if ((mTotalFunctionalSlots - groups) <= mTotalOccupiedSlots) {
-			res = R.drawable.ballon_4;
-		} else if ((mTotalFunctionalSlots - groups * 2) <= mTotalOccupiedSlots) {
-			res = R.drawable.ballon_3;
-		} else if ((mTotalFunctionalSlots - groups * 3) <= mTotalOccupiedSlots) {
-			res = R.drawable.ballon_2;
-		} else if (mTotalOccupiedSlots == 1) {
-			res = R.drawable.ballon_1;
-		} else if (mTotalOccupiedSlots == 0) {
-			res = R.drawable.ballon_0;
-		} else{
-			res = R.drawable.popup_inline_error_above_holo_dark_mod2;
+		if (mFavourite) {
+			if (mTotalFunctionalSlots == mTotalOccupiedSlots) {
+				res = R.drawable.ballon_5_fav;
+			} else if ((mTotalFunctionalSlots - groups) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_4_fav;
+			} else if ((mTotalFunctionalSlots - groups * 2) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_3_fav;
+			} else if ((mTotalFunctionalSlots - groups * 3) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_2_fav;
+			} else if (mTotalOccupiedSlots == 1) {
+				res = R.drawable.ballon_1_fav;
+			} else if (mTotalOccupiedSlots == 0) {
+				res = R.drawable.ballon_0_fav;
+			} else {
+				res = R.drawable.popup_inline_error_above_holo_dark_mod2;
+			}
+		} else {
+			if (mTotalFunctionalSlots == mTotalOccupiedSlots) {
+				res = R.drawable.ballon_5;
+			} else if ((mTotalFunctionalSlots - groups) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_4;
+			} else if ((mTotalFunctionalSlots - groups * 2) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_3;
+			} else if ((mTotalFunctionalSlots - groups * 3) <= mTotalOccupiedSlots) {
+				res = R.drawable.ballon_2;
+			} else if (mTotalOccupiedSlots == 1) {
+				res = R.drawable.ballon_1;
+			} else if (mTotalOccupiedSlots == 0) {
+				res = R.drawable.ballon_0;
+			} else {
+				res = R.drawable.popup_inline_error_above_holo_dark_mod2;
+			}
 		}
 		return res;
 	}
-	
+
 	@Override
 	public String toString() {
 		String text = getDescription();

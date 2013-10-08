@@ -39,14 +39,14 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="5"
-            android:gravity="center" >
+            android:layout_weight="5" >
 
             <CheckBox
                 android:id="@+id/item_fav_check"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/dra_btn_fav_star"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:button="@drawable/dra_btn_fav_star_holo_light"
                 android:duplicateParentState="false"
                 android:focusable="false" />
 

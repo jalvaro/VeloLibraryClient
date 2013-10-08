@@ -6,14 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.jalvaro.velobleu.client.R;
 import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 import com.jalvaro.velobleu.client.application.VeloApp;
-import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
 
@@ -44,7 +40,7 @@ public class FavoriteListFragment extends ArrayListFragment {
 		if (info.id == Tabs.FAVORITES.getId()) {
 			int menuItemIndex = item.getItemId();
 			if (menuItemIndex == 0) {
-				deleteFavouriteStation(info.position);
+				activity.deleteFavouriteStation(info.position);
 			}
 			return true;
 		}

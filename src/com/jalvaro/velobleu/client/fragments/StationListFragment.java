@@ -40,7 +40,7 @@ public class StationListFragment extends ArrayListFragment {
 		if (info.id == Tabs.STATIONS.getId()) {
 			int menuItemIndex = item.getItemId();
 			if (menuItemIndex == 0) {
-				addFavouriteStation(info.position);
+				activity.addFavouriteStation(info.position);
 			}
 			return true;
 		}

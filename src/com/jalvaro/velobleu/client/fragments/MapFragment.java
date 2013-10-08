@@ -12,6 +12,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,42 +46,14 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private TextView streetText;
 	private TextView freeSlotsText;
 	private TextView occupiedSlotsText;
-	private TextView disabledSlotsText;
+	// private TextView disabledSlotsText;
+	private CheckBox favCheckBox;
 	private TextView lastUpdateMillisText;
 	private Handler mHandler;
 	private Runnable mRunnable;
 	private int currentMarkerId = Constants.INIT_VALUE;
 	private static View rootView;
 	private MainActivity activity;
-
-	// private MapController mMapController;
-
-	/*
-	 * private MapController createMapController(VeloApp app) {
-	 * VeloHandler h = new VeloHandler(app, new AtomicBoolean()) {
-	 * 
-	 * @Override
-	 * public void handleMessage(Message msg) {
-	 * super.handleMessage(msg);
-	 * addStations();
-	 * showLastUpdate();
-	 * if (currentMarkerId != Constants.INIT_VALUE) {
-	 * showMarkerInfo(currentMarkerId);
-	 * }
-	 * setWorking(false);
-	 * }
-	 * 
-	 * @Override
-	 * public void handleError(Message msg) {
-	 * super.handleError(msg);
-	 * clearMarkerInfo();
-	 * setWorking(false);
-	 * }
-	 * };
-	 * MapController m = new MapController(app, h);
-	 * return m;
-	 * }
-	 */
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,8 +65,6 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		try {
 			rootView = inflater.inflate(R.layout.activity_map, container, false);
 			init();
-			// mMapController = createMapController((VeloApp)
-			// (getActivity().getApplication()));
 			onHandleUpdateMessage();
 		} catch (InflateException e) {
 			/* map is already there, just return view as it is */
@@ -107,7 +78,11 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	@Override
 	public void onResume() {
 		super.onResume();
+		addStations();
 		showLastUpdate();
+		if (currentMarkerId != Constants.INIT_VALUE) {
+			showMarkerInfo(currentMarkerId);
+		}
 		startUpdatingStatusLayout();
 		locate();
 	}
@@ -140,7 +115,9 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		streetText = (TextView) rootView.findViewById(R.id.streetText);
 		freeSlotsText = (TextView) rootView.findViewById(R.id.freeSlotsText);
 		occupiedSlotsText = (TextView) rootView.findViewById(R.id.occupiedSlotsText);
-		disabledSlotsText = (TextView) rootView.findViewById(R.id.disabledSlotsText);
+		favCheckBox = (CheckBox) rootView.findViewById(R.id.fav_check);
+		// disabledSlotsText = (TextView)
+		// rootView.findViewById(R.id.disabledSlotsText);
 		lastUpdateMillisText = (TextView) rootView.findViewById(R.id.lastUpdateMillisText);
 
 		listener = new OnMyLocationChangeListener() {
@@ -254,6 +231,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private void clearMarkerInfo() {
 		currentMarkerId = Constants.INIT_VALUE;
 		infoLayout.setVisibility(View.INVISIBLE);
+		favCheckBox.setOnCheckedChangeListener(null);
 		if (currentCircle != null) {
 			currentCircle.remove();
 		}
@@ -276,6 +254,11 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		streetText.setText(stationVO.toString());
 		freeSlotsText.setText(getString(R.string.text_free_slots, stationVO.getTotalFreeSlots()));
 		occupiedSlotsText.setText(getString(R.string.text_occupied_slots, stationVO.getTotalOccupiedSlots()));
-		disabledSlotsText.setText(getString(R.string.text_disabled_slots, stationVO.getDisabledSlots()));
+		favCheckBox.setId(stationVO.getId());
+		favCheckBox.setOnCheckedChangeListener(null);
+		favCheckBox.setChecked(stationVO.isFavourite());
+		favCheckBox.setOnCheckedChangeListener(activity.getOnCheckedChangedListener());
+		// disabledSlotsText.setText(getString(R.string.text_disabled_slots,
+		// stationVO.getDisabledSlots()));
 	}
 }

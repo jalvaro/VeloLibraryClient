@@ -5,17 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.jalvaro.velobleu.client.R;
 import com.jalvaro.velobleu.client.activities.MainActivity;
-import com.jalvaro.velobleu.client.application.VeloApp;
-import com.jalvaro.velobleu.client.exceptions.VeloException;
-import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
 import com.jalvaro.velobleu.client.views.MyArrayListAdapter;
 
@@ -28,23 +24,22 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.i("FragmentList", "onCreate");
 		activity = (MainActivity) getSherlockActivity();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
+		Log.i("FragmentList", "onCreateView");
 		return v;
 	}
 
 	protected void setList() {
-		if (activity != null) {
-			MyArrayListAdapter adapter = new MyArrayListAdapter(activity, getList(), getOnStarClickedListener());
-			if (getListView() != null) {
-				getListView().setAdapter(adapter);
-				registerForContextMenu(getListView());
-			}
+		if (activity != null && isAdded() && getListView() != null) {
+			MyArrayListAdapter adapter = new MyArrayListAdapter(activity, getList(), activity.getOnCheckedChangedListener());
+			getListView().setAdapter(adapter);
+			registerForContextMenu(getListView());
 		}
 	}
 
@@ -53,7 +48,7 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		Log.i("FragmentList", "onActivityCreated");
 		setList();
 		registerForContextMenu(getListView());
 	}
@@ -61,6 +56,7 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Log.i("FragmentList", "Item clicked: " + id);
+		// activity.
 	}
 
 	@Override
@@ -73,21 +69,7 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 		// TODO Auto-generated method stub
 	}
 
-	protected OnCheckedChangeListener getOnStarClickedListener() {
-		return new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-				if (arg1) {
-					addFavouriteStation(arg0.getId());
-				} else {
-					deleteFavouriteStation(arg0.getId());
-				}
-			}
-		};
-	}
-
-	protected void addFavouriteStation(int id) {
+	/*protected void addFavouriteStation(int id) {
 		VeloApp app = (VeloApp) activity.getApplication();
 		FleetVO fleetVO = app.getFleetVO();
 		FleetVO favFleetVO = app.getFavouriteFleetVO();
@@ -107,9 +89,9 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 			Toast.makeText(activity, "Ya esta en favs.", Toast.LENGTH_LONG).show();
 			activity.onHandleUpdateError();
 		}
-	}
+	}*/
 
-	protected void deleteFavouriteStation(int id) {
+	/*protected void deleteFavouriteStation(int id) {
 		VeloApp app = (VeloApp) activity.getApplication();
 		FleetVO favFleetVO = app.getFavouriteFleetVO();
 		StationVO stationVO = favFleetVO.getStationById(id);
@@ -123,5 +105,5 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 			activity.onHandleUpdateError();
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

@@ -5,25 +5,14 @@ import android.os.Message;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.asynctasks.UpdateAsyncTask;
 import com.jalvaro.velobleu.client.exceptions.VeloException;
-import com.jalvaro.velobleu.client.models.FleetVO;
 
-/**
- * 
- * @author jordi
- *
- * Aquesta classe no s«utilitza mes!!!
- * MainController la substitueix
- */
-
-public class MapController extends Controller{
-	private VeloHandler handler;
+public class UpdateController extends Controller{
 	
-	public MapController(VeloApp app, VeloHandler handler) {
+	public UpdateController(VeloApp app) {
 		super(app);
-		this.handler = handler;
 	}
 	
-	/*public void update(FleetVO fleetVO) {
+	public void update(VeloHandler handler) {
 		VeloCallback callback = new VeloCallback(handler) {
 			
 			@Override
@@ -38,6 +27,6 @@ public class MapController extends Controller{
 		};
 		
 		new UpdateAsyncTask(callback, getApplication()).execute();
-	}*/
+	}
 	
 }
