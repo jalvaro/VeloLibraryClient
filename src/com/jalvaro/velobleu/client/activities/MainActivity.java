@@ -48,6 +48,8 @@ import com.jalvaro.velobleu.client.fragments.FavoriteListFragment;
 import com.jalvaro.velobleu.client.fragments.MapFragment;
 import com.jalvaro.velobleu.client.fragments.StationListFragment;
 import com.jalvaro.velobleu.client.fragments.Updatable;
+import com.jalvaro.velobleu.client.models.StationVO;
+import com.jalvaro.velobleu.client.views.MyItemArrayLayout;
 
 public class MainActivity extends SherlockFragmentActivity implements TabListener {
 
@@ -62,8 +64,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	 */
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private AtomicBoolean mIsUpdating;
-	private AtomicBoolean mIsAddingFavStation;
-	private AtomicBoolean mIsDeletingFavStation;
+	private AtomicBoolean mIsAddingDeletingFavStation;
 	private UpdateController mUpdateController;
 	private AddFavouriteStationController mAddFavStationController;
 	private DeleteFavouriteStationController mDeleteFavStationController;
@@ -72,6 +73,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	private VeloHandler mDeleteFavStationHandler;
 	private long mLastUpdateMillis = Constants.INIT_VALUE;
 	private OnCheckedChangeListener onCheckedChangeListener;
+	private StationVO selectedStationVO;
 	private final static String TAG = MainActivity.class.getName();
 
 	private Updatable[] mFragments;
@@ -177,8 +179,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	private void init() {
 		mFragments = new Updatable[Tabs.values().length];
 		mIsUpdating = new AtomicBoolean();
-		mIsAddingFavStation = new AtomicBoolean();
-		mIsDeletingFavStation = new AtomicBoolean();
+		mIsAddingDeletingFavStation = new AtomicBoolean();
 		mUpdateController = new UpdateController((VeloApp) getApplication());
 		mAddFavStationController = new AddFavouriteStationController((VeloApp) getApplication());
 		mDeleteFavStationController = new DeleteFavouriteStationController((VeloApp) getApplication());
@@ -202,7 +203,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			}
 		};
 
-		mAddFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingFavStation) {
+		mAddFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingDeletingFavStation) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
@@ -221,7 +222,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			}
 		};
 
-		mDeleteFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsDeletingFavStation) {
+		mDeleteFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingDeletingFavStation) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
@@ -257,13 +258,13 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	}
 
 	public void addFavouriteStation(int id) {
-		if (mIsAddingFavStation.compareAndSet(false, true)) {
+		if (mIsAddingDeletingFavStation.compareAndSet(false, true)) {
 			mAddFavStationController.add(mAddFavStationHandler, id);
 		}
 	}
 
 	public void deleteFavouriteStation(int id) {
-		if (mIsDeletingFavStation.compareAndSet(false, true)) {
+		if (mIsAddingDeletingFavStation.compareAndSet(false, true)) {
 			mDeleteFavStationController.delete(mDeleteFavStationHandler, id);
 		}
 	}
@@ -370,14 +371,23 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 
 				@Override
 				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					int id = MyItemArrayLayout.getStationId(arg0);
 					if (arg1) {
-						addFavouriteStation(arg0.getId());
+						addFavouriteStation(id);
 					} else {
-						deleteFavouriteStation(arg0.getId());
+						deleteFavouriteStation(id);
 					}
 				}
 			};
 		}
 		return onCheckedChangeListener;
+	}
+	
+	public void setSelectedStation(StationVO selectedStationVO) {
+		this.selectedStationVO = selectedStationVO;
+	}
+	
+	public StationVO getSelectedStation() {
+		return selectedStationVO;
 	}
 }

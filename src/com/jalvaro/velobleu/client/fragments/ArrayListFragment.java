@@ -5,15 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.jalvaro.velobleu.client.R;
 import com.jalvaro.velobleu.client.activities.MainActivity;
+import com.jalvaro.velobleu.client.application.VeloApp;
+import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
 import com.jalvaro.velobleu.client.views.MyArrayListAdapter;
+import com.jalvaro.velobleu.client.views.MyItemArrayLayout;
 
 public abstract class ArrayListFragment extends SherlockListFragment implements Updatable {
 	protected MainActivity activity;
@@ -56,7 +57,10 @@ public abstract class ArrayListFragment extends SherlockListFragment implements 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Log.i("FragmentList", "Item clicked: " + id);
-		// activity.
+		MyItemArrayLayout item = (MyItemArrayLayout) v.findViewById(R.id.item_fav_my_item_array);
+		FleetVO fleetVO = ((VeloApp) activity.getApplication()).getFleetVO();
+		activity.setSelectedStation(fleetVO.getStationById(item.getStationId()));
+		activity.getSupportActionBar().setSelectedNavigationItem(0);
 	}
 
 	@Override

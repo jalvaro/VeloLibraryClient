@@ -165,12 +165,14 @@ public class FleetVO {
 
 	public StationVO[] getSubArrayOfAvailableStationsById(FleetVO fleetVO) {
 		List<StationVO> stations = new ArrayList<StationVO>();
-		for (StationVO stationVO : fleetVO.getStations()) {
-			StationVO stationAux = getStationById(stationVO.getId());
-			if (stationAux != null && stationAux.isAvailable()) {
-				// stationAux.setDescription(stationVO.getDescription());
-				stationAux.setFavourite(stationVO.isFavourite());
-				stations.add(stationAux);
+		if (fleetVO != null && fleetVO.getStations() != null) {
+			for (StationVO stationVO : fleetVO.getStations()) {
+				StationVO stationAux = getStationById(stationVO.getId());
+				if (stationAux != null && stationAux.isAvailable()) {
+					// stationAux.setDescription(stationVO.getDescription());
+					stationAux.setFavourite(stationVO.isFavourite());
+					stations.add(stationAux);
+				}
 			}
 		}
 		return stations.toArray(new StationVO[stations.size()]);

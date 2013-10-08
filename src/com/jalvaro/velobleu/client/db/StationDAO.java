@@ -217,7 +217,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 			/* Enable BDD */
 			enableBDD();
 			Log.i("BDD - " + TAG, "Load records");
-			Cursor c = db.query(true, getTableName(), getStringValues(), "", null, null, null, Fields.ID.getName() + " desc", null);
+			Cursor c = db.query(true, getTableName(), getStringValues(), "", null, null, null, Fields.DESCRIPTION.getName() + " asc", null);
 			// Nos aseguramos de que existe al menos un registro
 			if (c.moveToFirst()) {
 				// Recorremos el cursor hasta que no haya mas registros

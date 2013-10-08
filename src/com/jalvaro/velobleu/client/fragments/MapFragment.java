@@ -84,7 +84,15 @@ public class MapFragment extends SherlockFragment implements Updatable {
 			showMarkerInfo(currentMarkerId);
 		}
 		startUpdatingStatusLayout();
-		locate();
+		StationVO selectedStationVO = activity.getSelectedStation();
+		if (selectedStationVO != null) {
+			showMarkerInfo(selectedStationVO.getId());
+			activity.setSelectedStation(null);
+			LatLng latLng = new LatLng(selectedStationVO.getLatitude(), selectedStationVO.getLongitude());
+			moveCamera(latLng, Constants.ZOOM);
+		} else {
+			locate();
+		}
 	}
 
 	@Override

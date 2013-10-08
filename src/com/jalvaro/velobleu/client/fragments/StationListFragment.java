@@ -23,7 +23,7 @@ public class StationListFragment extends ArrayListFragment {
 		return fleet.getSubArrayOfAvailableStations();
 	}
 
-	@Override
+	/*@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		info.id = Tabs.STATIONS.getId();
@@ -46,5 +46,5 @@ public class StationListFragment extends ArrayListFragment {
 		}
 
 		return false;
-	}
+	}*/
 }

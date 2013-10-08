@@ -2,7 +2,7 @@ package com.jalvaro.velobleu.client.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ public class MyItemArrayLayout extends LinearLayout {
 	
 	private TextView titleView;
 	private TextView descriptionView;
-	private CheckBox starCheckBox;
+	private MyCheckBox starCheckBox;
 
 	public MyItemArrayLayout(Context context) {
 		super(context);
@@ -27,16 +27,22 @@ public class MyItemArrayLayout extends LinearLayout {
 	private void initialize() {
 		titleView = (TextView) findViewById(R.id.item_fav_title);
 		descriptionView = (TextView) findViewById(R.id.item_fav_text);
-		starCheckBox = (CheckBox) findViewById(R.id.item_fav_check);
+		starCheckBox = (MyCheckBox) findViewById(R.id.item_fav_check);
 	}
 
-	public void fill(String title, String text, int position, boolean checked, OnCheckedChangeListener listener) {
+	public void fill(String title, String text, int stationId, boolean checked, OnCheckedChangeListener listener) {
 		initialize();
 
 		titleView.setText(title);
 		descriptionView.setText(text);
-		starCheckBox.setChecked(checked);
-		starCheckBox.setId(position);
-		starCheckBox.setOnCheckedChangeListener(listener);
+		starCheckBox.fill(stationId, checked, listener);
+	}
+	
+	public int getStationId() {
+		return starCheckBox.getStationId();
+	}
+	
+	public static int getStationId(CompoundButton starCheckBox) {
+		return ((MyCheckBox) starCheckBox).getStationId();
 	}
 }
