@@ -1,9 +1,11 @@
 package com.jalvaro.velobleu.client.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.jalvaro.velobleu.client.models.StationVO.StationComparator;
 
 public class FleetVO {
 
@@ -40,6 +42,8 @@ public class FleetVO {
 	@SerializedName("loc")
 	private String mLocation;
 
+	private boolean isOrdered;
+
 	public FleetVO() {
 		this("", "", 0.0, 0.0, 12, "", "", "", "", new StationVO[0], "");
 	}
@@ -58,6 +62,7 @@ public class FleetVO {
 		this.mDate = date;
 		this.mStations = stations;
 		this.mLocation = location;
+		this.isOrdered = false;
 	}
 
 	public String getOrganization() {
@@ -132,8 +137,16 @@ public class FleetVO {
 		this.mDate = date;
 	}
 
-	public StationVO[] getStations() {
+	public synchronized StationVO[] getStations() {
+		orderStations();
 		return mStations;
+	}
+
+	private void orderStations() {
+		if (!isOrdered) {
+			Arrays.sort(mStations, new StationComparator());
+			isOrdered = true;
+		}
 	}
 
 	public StationVO getStation(int i) {
@@ -193,19 +206,28 @@ public class FleetVO {
 			getStationById(stationVO.getId()).setFavourite(true);
 		}
 	}
-	/*
-	 * public void copyValues(FleetVO fleetVO) {
-	 * this.mOrganization = fleetVO.getOrganization();
-	 * this.mCountry = fleetVO.getCountry();
-	 * this.mLongitude = fleetVO.getLongitude();
-	 * this.mLatitude = fleetVO.getLatitude();
-	 * this.mZoom = fleetVO.getZoom();
-	 * this.mDescription = fleetVO.getDescription();
-	 * this.mWeb = fleetVO.getWeb();
-	 * this.mRegistrationLink = fleetVO.getRegistrationLink();
-	 * this.mDate = fleetVO.getDate();
-	 * this.mStations = fleetVO.getStations();
-	 * this.mLocation = fleetVO.getLocation();
-	 * }
-	 */
+
+	public void addStation(StationVO stationVO) {
+		StationVO[] stations = new StationVO[mStations.length + 1];
+		for (int i = 0; i < mStations.length; i++) {
+			stations[i] = mStations[i];
+		}
+		stations[mStations.length] = stationVO;
+		mStations = stations;
+		orderStations();
+	}
+
+	public void deleteStation(StationVO stationVO) {
+		if (getStationById(stationVO.getId()) != null) {
+			StationVO[] stations = new StationVO[mStations.length - 1];
+			for (int i = 0, k = 0; i < mStations.length; i++) {
+				if (mStations[i].getId() != stationVO.getId()) {
+					stations[k] = mStations[i];
+					k++;
+				}
+			}
+			mStations = stations;
+			orderStations();
+		}
+	}
 }

@@ -50,22 +50,25 @@ public class VeloApp extends Application {
 
 	public void setFleetVO(FleetVO fleetVO) throws VeloException {
 		Log.d(TAG, "setFleet --> " + fleetVO.getStations().length);
-		/*new AsyncTask<FleetVO, Integer, Integer>() {
-
-			@Override
-			protected Integer doInBackground(FleetVO... fleetVO) {
-				try {
-					storeManager.saveFleet(fleetVO[0]);
-					VeloApp.this.fleetVO = storeManager.getFleet();
-				} catch (VeloException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return null;
-			}
-		}.execute(fleetVO);*/
+		/*
+		 * new AsyncTask<FleetVO, Integer, Integer>() {
+		 * 
+		 * @Override
+		 * protected Integer doInBackground(FleetVO... fleetVO) {
+		 * try {
+		 * storeManager.saveFleet(fleetVO[0]);
+		 * VeloApp.this.fleetVO = storeManager.getFleet();
+		 * } catch (VeloException e) {
+		 * // TODO Auto-generated catch block
+		 * e.printStackTrace();
+		 * }
+		 * return null;
+		 * }
+		 * }.execute(fleetVO);
+		 */
+		this.fleetVO = fleetVO;
 		storeManager.saveFleet(fleetVO);
-		this.fleetVO = storeManager.getFleet();
+		//this.fleetVO = storeManager.getFleet();
 
 		Log.d(TAG, "setFleet --> " + this.fleetVO.getStations().length);
 	}
@@ -75,23 +78,25 @@ public class VeloApp extends Application {
 	}
 
 	public void setFavouriteFleetVO(FleetVO favouriteFleetVO) throws VeloException {
-		storeManager.saveFavouriteFleet(favouriteFleetVO);
 		this.favouriteFleetVO = favouriteFleetVO;
+		storeManager.saveFavouriteFleet(favouriteFleetVO);
 	}
 
 	public void addFavouriteStationVO(StationVO stationVO) throws VeloException {
 		stationVO.setFavourite(true);
 		fleetVO.getStationById(stationVO.getId()).setFavourite(true);
+		favouriteFleetVO.addStation(stationVO);
 		storeManager.saveFavouriteStation(stationVO);
-		this.favouriteFleetVO = storeManager.getFavouriteFleet();
+		//this.favouriteFleetVO = storeManager.getFavouriteFleet();
 	}
 
 	public void deleteFavouriteStationVO(StationVO stationVO) throws VeloException {
 		if (stationVO != null) {
 			stationVO.setFavourite(false);
 			fleetVO.getStationById(stationVO.getId()).setFavourite(false);
+			favouriteFleetVO.deleteStation(stationVO);
 			storeManager.deleteFavouriteStation(stationVO);
-			this.favouriteFleetVO = storeManager.getFavouriteFleet();
+			//this.favouriteFleetVO = storeManager.getFavouriteFleet();
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.jalvaro.velobleu.client.models;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Comparator;
 
 import com.google.gson.annotations.SerializedName;
 import com.jalvaro.velobleu.client.R;
@@ -216,5 +217,14 @@ public class StationVO {
 			text = getName();
 		}
 		return text;
+	}
+	
+	public static class StationComparator implements Comparator<StationVO> {
+
+		@Override
+		public int compare(StationVO arg0, StationVO arg1) {
+			return arg0.getDescription().compareTo(arg1.getDescription());
+		}
+		
 	}
 }
