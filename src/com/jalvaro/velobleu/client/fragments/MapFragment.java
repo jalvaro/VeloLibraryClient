@@ -12,7 +12,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +34,7 @@ import com.jalvaro.velobleu.client.application.Constants;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
+import com.jalvaro.velobleu.client.views.MyCheckBox;
 
 public class MapFragment extends SherlockFragment implements Updatable {
 
@@ -47,7 +47,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private TextView freeSlotsText;
 	private TextView occupiedSlotsText;
 	// private TextView disabledSlotsText;
-	private CheckBox favCheckBox;
+	private MyCheckBox favCheckBox;
 	private TextView lastUpdateMillisText;
 	private Handler mHandler;
 	private Runnable mRunnable;
@@ -80,19 +80,13 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		super.onResume();
 		addStations();
 		showLastUpdate();
-		if (currentMarkerId != Constants.INIT_VALUE) {
-			showMarkerInfo(currentMarkerId);
-		}
-		startUpdatingStatusLayout();
-		StationVO selectedStationVO = activity.getSelectedStation();
-		if (selectedStationVO != null) {
-			showMarkerInfo(selectedStationVO.getId());
-			activity.setSelectedStation(null);
-			LatLng latLng = new LatLng(selectedStationVO.getLatitude(), selectedStationVO.getLongitude());
-			moveCamera(latLng, Constants.ZOOM);
-		} else {
-			locate();
-		}
+		/*
+		 * if (currentMarkerId != Constants.INIT_VALUE) {
+		 * showMarkerInfo(currentMarkerId);
+		 * }
+		 */
+		// decideWhereToCenterMap();
+		locateMeOnResume();
 	}
 
 	@Override
@@ -123,7 +117,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		streetText = (TextView) rootView.findViewById(R.id.streetText);
 		freeSlotsText = (TextView) rootView.findViewById(R.id.freeSlotsText);
 		occupiedSlotsText = (TextView) rootView.findViewById(R.id.occupiedSlotsText);
-		favCheckBox = (CheckBox) rootView.findViewById(R.id.fav_check);
+		favCheckBox = (MyCheckBox) rootView.findViewById(R.id.fav_check);
 		// disabledSlotsText = (TextView)
 		// rootView.findViewById(R.id.disabledSlotsText);
 		lastUpdateMillisText = (TextView) rootView.findViewById(R.id.lastUpdateMillisText);
@@ -138,10 +132,10 @@ public class MapFragment extends SherlockFragment implements Updatable {
 			}
 		};
 
-		center();
+		centerInNice();
 	}
 
-	private void center() {
+	private void centerInNice() {
 		moveCamera(new LatLng(Constants.LAT_NICE_CENTER, Constants.LON_NICE_CENTER), Constants.ZOOM);
 	}
 
@@ -153,7 +147,32 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		map.animateCamera(zoom);
 	}
 
-	private void locate() {
+	public void decideWhereToCenterMap() {
+		if (isAdded()) {
+			StationVO selectedStationVO = activity.getSelectedStation();
+			if (selectedStationVO != null) {
+				showMarkerInfo(selectedStationVO.getId());
+				activity.setSelectedStation(null);
+				LatLng latLng = new LatLng(selectedStationVO.getLatitude(), selectedStationVO.getLongitude());
+				moveCamera(latLng, Constants.ZOOM);
+			} else if (currentMarkerId != Constants.INIT_VALUE) {
+				showMarkerInfo(currentMarkerId);
+				StationVO stationVO = ((VeloApp) activity.getApplication()).getFleetVO().getStationById(currentMarkerId);
+				LatLng latLng = new LatLng(stationVO.getLatitude(), stationVO.getLongitude());
+				moveCamera(latLng, Constants.ZOOM);
+			} else {
+				locateMe();
+			}
+		}
+	}
+	
+	private void locateMeOnResume() {
+		if (!map.isMyLocationEnabled()) {
+			locateMe();
+		}
+	}
+
+	private void locateMe() {
 		map.setMyLocationEnabled(true);
 		map.setOnMyLocationChangeListener(listener);
 	}
@@ -262,10 +281,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		streetText.setText(stationVO.toString());
 		freeSlotsText.setText(getString(R.string.text_free_slots, stationVO.getTotalFreeSlots()));
 		occupiedSlotsText.setText(getString(R.string.text_occupied_slots, stationVO.getTotalOccupiedSlots()));
-		favCheckBox.setId(stationVO.getId());
-		favCheckBox.setOnCheckedChangeListener(null);
-		favCheckBox.setChecked(stationVO.isFavourite());
-		favCheckBox.setOnCheckedChangeListener(activity.getOnCheckedChangedListener());
+		favCheckBox.fill(stationVO.getId(), stationVO.isFavourite(), activity.getOnCheckedChangedListener());
 		// disabledSlotsText.setText(getString(R.string.text_disabled_slots,
 		// stationVO.getDisabledSlots()));
 	}

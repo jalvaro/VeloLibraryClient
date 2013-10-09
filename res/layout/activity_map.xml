@@ -51,7 +51,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="8" >
 
-                <CheckBox
+                <com.jalvaro.velobleu.client.views.MyCheckBox
                     android:id="@+id/fav_check"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

@@ -37,6 +37,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jalvaro.velobleu.client.R;
+import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 import com.jalvaro.velobleu.client.application.Constants;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.controllers.AddFavouriteStationController;
@@ -284,6 +285,9 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+		if (tab.getPosition() == Tabs.MAP.id) {
+			((MapFragment) mFragments[Tabs.MAP.id]).decideWhereToCenterMap();
+		}
 	}
 
 	@Override

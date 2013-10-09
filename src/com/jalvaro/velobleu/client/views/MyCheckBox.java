@@ -20,6 +20,7 @@ public class MyCheckBox extends CheckBox {
 	}
 
 	public void fill(int stationId, boolean checked, OnCheckedChangeListener listener) {
+		setOnCheckedChangeListener(null);
 		setChecked(checked);
 		this.stationId = stationId;
 		setOnCheckedChangeListener(listener);
