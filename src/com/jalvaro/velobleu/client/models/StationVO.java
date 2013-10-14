@@ -1,11 +1,10 @@
 package com.jalvaro.velobleu.client.models;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Comparator;
 
 import com.google.gson.annotations.SerializedName;
 import com.jalvaro.velobleu.client.R;
+import com.jalvaro.velobleu.client.utils.AndroidUtils;
 
 public class StationVO {
 
@@ -52,16 +51,7 @@ public class StationVO {
 	}
 
 	public String getDescription() {
-		String aux = mDescription;
-		try {
-			aux = URLDecoder.decode(mDescription, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			aux = "";
-		}
+		String aux = AndroidUtils.decode(mDescription);
 		return aux;
 	}
 
@@ -134,16 +124,7 @@ public class StationVO {
 	}
 
 	public String getName() {
-		String aux = mName;
-		try {
-			aux = URLDecoder.decode(mName, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			aux = "";
-		}
+		String aux = AndroidUtils.decode(mName);
 		return aux;
 	}
 
@@ -218,13 +199,13 @@ public class StationVO {
 		}
 		return text;
 	}
-	
+
 	public static class StationComparator implements Comparator<StationVO> {
 
 		@Override
 		public int compare(StationVO arg0, StationVO arg1) {
 			return arg0.getDescription().compareTo(arg1.getDescription());
 		}
-		
+
 	}
 }

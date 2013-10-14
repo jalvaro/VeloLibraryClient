@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import com.jalvaro.velobleu.client.activities.AboutActivity;
 import com.jalvaro.velobleu.client.application.VeloApp;
@@ -45,16 +44,14 @@ public class Controller {
 	
 	public static abstract class VeloHandler extends Handler {
 		private AtomicBoolean isWorking;
-		private VeloApp mApp;
 		
-		public VeloHandler(VeloApp app, AtomicBoolean isWorking) {
+		public VeloHandler(AtomicBoolean isWorking) {
 			this.isWorking = isWorking;
-			this.mApp = app;
 		}
 
 		public void handleError(Message msg) {
 			super.handleMessage(msg);
-			Toast.makeText(mApp, "Error!!!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(mApp, "Error!!!", Toast.LENGTH_LONG).show();
 		}
 		
 		public void setWorking(boolean isWorking) {

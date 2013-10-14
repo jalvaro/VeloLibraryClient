@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 import com.jalvaro.velobleu.client.models.StationVO.StationComparator;
+import com.jalvaro.velobleu.client.utils.AndroidUtils;
 
 public class FleetVO {
 
@@ -66,7 +67,8 @@ public class FleetVO {
 	}
 
 	public String getOrganization() {
-		return mOrganization;
+		String aux = AndroidUtils.decode(mOrganization);
+		return aux;
 	}
 
 	public void setOrganization(String organization) {
@@ -74,7 +76,8 @@ public class FleetVO {
 	}
 
 	public String getCountry() {
-		return mCountry;
+		String aux = AndroidUtils.decode(mCountry);
+		return aux;
 	}
 
 	public void setCountry(String country) {
@@ -106,7 +109,8 @@ public class FleetVO {
 	}
 
 	public String getDescription() {
-		return mDescription;
+		String aux = AndroidUtils.decode(mDescription);
+		return aux;
 	}
 
 	public void setDescription(String description) {
@@ -114,7 +118,8 @@ public class FleetVO {
 	}
 
 	public String getWeb() {
-		return mWeb;
+		String aux = AndroidUtils.decode(mWeb);
+		return aux;
 	}
 
 	public void setWeb(String web) {
@@ -122,7 +127,8 @@ public class FleetVO {
 	}
 
 	public String getRegistrationLink() {
-		return mRegistrationLink;
+		String aux = AndroidUtils.decode(mRegistrationLink);
+		return aux;
 	}
 
 	public void setRegistrationLink(String registrationLink) {
@@ -130,7 +136,8 @@ public class FleetVO {
 	}
 
 	public String getDate() {
-		return mDate;
+		String aux = AndroidUtils.decode(mDate);
+		return aux;
 	}
 
 	public void setDate(String date) {
@@ -169,7 +176,8 @@ public class FleetVO {
 	}
 
 	public String getLocation() {
-		return mLocation;
+		String aux = AndroidUtils.decode(mLocation);
+		return aux;
 	}
 
 	public void setLocation(String location) {

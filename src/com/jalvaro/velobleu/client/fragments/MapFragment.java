@@ -70,6 +70,9 @@ public class MapFragment extends SherlockFragment implements Updatable {
 			/* map is already there, just return view as it is */
 			Log.d(TAG, "Exception thrown: map is already there, just return view as it is");
 			e.printStackTrace();
+		} catch (Exception e) {
+			Log.d(TAG, "Exception thrown: Creating map fragment...");
+			e.printStackTrace();
 		}
 
 		return rootView;
@@ -86,6 +89,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		 * }
 		 */
 		// decideWhereToCenterMap();
+		startUpdatingStatusLayout();
 		locateMeOnResume();
 	}
 
@@ -165,7 +169,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 			}
 		}
 	}
-	
+
 	private void locateMeOnResume() {
 		if (!map.isMyLocationEnabled()) {
 			locateMe();
@@ -178,29 +182,31 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	private void addStations() {
-		FleetVO fleetVO = ((VeloApp) activity.getApplication()).getFleetVO();
-		if (fleetVO != null) {
-			map.clear();
-			for (StationVO stationVO : fleetVO.getSubArrayOfAvailableStations()) {
-				map.addMarker(new MarkerOptions().position(new LatLng(stationVO.getLatitude(), stationVO.getLongitude()))
-						.icon(BitmapDescriptorFactory.fromResource(stationVO.getDrawable())).title(Integer.toString(stationVO.getId())));
-			}
-
-			map.setOnMarkerClickListener(new OnMarkerClickListener() {
-
-				@Override
-				public boolean onMarkerClick(Marker marker) {
-					int id = Integer.valueOf(marker.getTitle());
-
-					if (id == currentMarkerId && infoLayout.getVisibility() == View.VISIBLE) {
-						clearMarkerInfo();
-					} else {
-						showMarkerInfo(id);
-					}
-
-					return true;
+		if (activity != null) {
+			FleetVO fleetVO = ((VeloApp) activity.getApplication()).getFleetVO();
+			if (fleetVO != null) {
+				map.clear();
+				for (StationVO stationVO : fleetVO.getSubArrayOfAvailableStations()) {
+					map.addMarker(new MarkerOptions().position(new LatLng(stationVO.getLatitude(), stationVO.getLongitude()))
+							.icon(BitmapDescriptorFactory.fromResource(stationVO.getDrawable())).title(Integer.toString(stationVO.getId())));
 				}
-			});
+
+				map.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+					@Override
+					public boolean onMarkerClick(Marker marker) {
+						int id = Integer.valueOf(marker.getTitle());
+
+						if (id == currentMarkerId && infoLayout.getVisibility() == View.VISIBLE) {
+							clearMarkerInfo();
+						} else {
+							showMarkerInfo(id);
+						}
+
+						return true;
+					}
+				});
+			}
 		}
 	}
 
@@ -258,6 +264,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private void clearMarkerInfo() {
 		currentMarkerId = Constants.INIT_VALUE;
 		infoLayout.setVisibility(View.INVISIBLE);
+		map.setPadding(0, 0, 0, 0);
 		favCheckBox.setOnCheckedChangeListener(null);
 		if (currentCircle != null) {
 			currentCircle.remove();
@@ -267,7 +274,7 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private void showMarkerInfo(int id) {
 		currentMarkerId = id;
 		StationVO stationVO = ((VeloApp) activity.getApplication()).getFleetVO().getStationById(id);
-
+		map.setPadding(0, infoLayout.getHeight(), 0, 0);
 		infoLayout.setVisibility(View.VISIBLE);
 		updateInfoLayout(stationVO);
 		if (currentCircle != null) {

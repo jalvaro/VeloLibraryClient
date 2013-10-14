@@ -1,15 +1,20 @@
 package com.jalvaro.velobleu.client.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.location.Location;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 
 public class AndroidUtils {
+	private static final String TAG = AndroidUtils.class.getName();
+
 	public static Location convertGeoPointToLocation(GeoPoint geoPoint) {
 		Location location = new Location("");
 		location.setLatitude((double) (((double) geoPoint.getLatitudeE6()) / 1000000));
@@ -51,8 +56,24 @@ public class AndroidUtils {
 		};
 		Linkify.addLinks(textView, Pattern.compile(patternToMatch), null, null, filter);
 	}
-	
+
 	public static String getPackage() {
 		return "";
+	}
+
+	public static String decode(String text) {
+		String aux = text;
+		
+		try {
+			aux = URLDecoder.decode(text, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			Log.d(TAG, "Text to decode is null!");
+			aux = "";
+		}
+		
+		return aux;
 	}
 }

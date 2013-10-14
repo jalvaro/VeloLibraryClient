@@ -44,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#88000000"
-            android:baselineAligned="false" >
+            android:baselineAligned="false"
+            android:clickable="true" >
 
             <RelativeLayout
                 android:layout_width="fill_parent"

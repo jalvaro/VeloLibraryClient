@@ -1,14 +1,5 @@
 package com.jalvaro.velobleu.client.fragments;
 
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-
-import com.jalvaro.velobleu.client.R;
-import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;

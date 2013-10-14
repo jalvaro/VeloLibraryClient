@@ -1,12 +1,12 @@
 package com.jalvaro.velobleu.client.views;
 
-import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
-
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 
 public class ViewPagerMapNoScroll extends ViewPager {
 	

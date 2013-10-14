@@ -2,12 +2,12 @@ package com.jalvaro.velobleu.client.db;
 
 import java.util.List;
 
-import com.jalvaro.velobleu.client.exceptions.VeloException;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.jalvaro.velobleu.client.exceptions.VeloException;
 
 public abstract class GenericDAO<T> implements GenericInterfaceDAO<T> {
 

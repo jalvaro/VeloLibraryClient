@@ -37,7 +37,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jalvaro.velobleu.client.R;
-import com.jalvaro.velobleu.client.activities.MainActivity.Tabs;
 import com.jalvaro.velobleu.client.application.Constants;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.controllers.AddFavouriteStationController;
@@ -185,13 +184,13 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		mAddFavStationController = new AddFavouriteStationController((VeloApp) getApplication());
 		mDeleteFavStationController = new DeleteFavouriteStationController((VeloApp) getApplication());
 
-		mMapHandler = new VeloHandler((VeloApp) getApplication(), mIsUpdating) {
+		mMapHandler = new VeloHandler(mIsUpdating) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				mLastUpdateMillis = Calendar.getInstance().getTimeInMillis();
 				onHandleUpdateMessage();
-				Toast.makeText(MainActivity.this, R.string.toast_service_updated, Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, R.string.toast_service_updated, Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 
@@ -204,12 +203,12 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			}
 		};
 
-		mAddFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingDeletingFavStation) {
+		mAddFavStationHandler = new VeloHandler(mIsAddingDeletingFavStation) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				onHandleUpdateMessage();
-				Toast.makeText(MainActivity.this, "Se ha a–adido en favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "Se ha a–adido en favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 
@@ -217,18 +216,18 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			public void handleError(Message msg) {
 				super.handleError(msg);
 				onHandleUpdateError();
-				Toast.makeText(MainActivity.this, "Ya esta en favs.", Toast.LENGTH_LONG).show();
-				Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "Ya esta en favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 		};
 
-		mDeleteFavStationHandler = new VeloHandler((VeloApp) getApplication(), mIsAddingDeletingFavStation) {
+		mDeleteFavStationHandler = new VeloHandler(mIsAddingDeletingFavStation) {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				onHandleUpdateMessage();
-				Toast.makeText(MainActivity.this, "Se ha eliminado de favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "Se ha eliminado de favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 
@@ -236,7 +235,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			public void handleError(Message msg) {
 				super.handleError(msg);
 				onHandleUpdateError();
-				Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "No se ha podido guardar en favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 		};
