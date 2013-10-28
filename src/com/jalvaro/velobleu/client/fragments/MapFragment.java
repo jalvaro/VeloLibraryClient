@@ -171,8 +171,10 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	private void locateMeOnResume() {
-		if (!map.isMyLocationEnabled()) {
-			locateMe();
+		if (map != null) {
+			if (!map.isMyLocationEnabled()) {
+				locateMe();
+			}
 		}
 	}
 
@@ -211,23 +213,25 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	}
 
 	private void showLastUpdate() {
-		long lastUpdateMillis = activity.getLastUpdate();
-		if (lastUpdateMillis != Constants.INIT_VALUE) {
-			Calendar cal = Calendar.getInstance();
-			long diff = cal.getTimeInMillis() - lastUpdateMillis;
+		if (activity != null) {
+			long lastUpdateMillis = activity.getLastUpdate();
+			if (lastUpdateMillis != Constants.INIT_VALUE) {
+				Calendar cal = Calendar.getInstance();
+				long diff = cal.getTimeInMillis() - lastUpdateMillis;
 
-			if (diff < 30 * Constants.SECOND) {
-				lastUpdateMillisText.setText(R.string.text_just_now);
-			} else if (diff < Constants.MINUTE) {
-				lastUpdateMillisText.setText(R.string.text_more_30_sec);
-			} else if (diff < 2 * Constants.MINUTE) {
-				lastUpdateMillisText.setText(R.string.text_1_minute_ago);
-			} else if (diff < Constants.HOUR) {
-				lastUpdateMillisText.setText(getString(R.string.text_x_minutes_ago, diff / Constants.MINUTE));
-			} else {
-				cal.setTimeInMillis(lastUpdateMillis);
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-				lastUpdateMillisText.setText(dateFormat.format(cal.getTime()));
+				if (diff < 30 * Constants.SECOND) {
+					lastUpdateMillisText.setText(R.string.text_just_now);
+				} else if (diff < Constants.MINUTE) {
+					lastUpdateMillisText.setText(R.string.text_more_30_sec);
+				} else if (diff < 2 * Constants.MINUTE) {
+					lastUpdateMillisText.setText(R.string.text_1_minute_ago);
+				} else if (diff < Constants.HOUR) {
+					lastUpdateMillisText.setText(getString(R.string.text_x_minutes_ago, diff / Constants.MINUTE));
+				} else {
+					cal.setTimeInMillis(lastUpdateMillis);
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+					lastUpdateMillisText.setText(dateFormat.format(cal.getTime()));
+				}
 			}
 		}
 	}
