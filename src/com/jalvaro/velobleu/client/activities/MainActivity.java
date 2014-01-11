@@ -71,7 +71,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	private VeloHandler mMapHandler;
 	private VeloHandler mAddFavStationHandler;
 	private VeloHandler mDeleteFavStationHandler;
-	private long mLastUpdateMillis = Constants.INIT_VALUE;
+	//private long mLastUpdateMillis = Constants.INIT_VALUE;
 	private OnCheckedChangeListener onCheckedChangeListener;
 	private StationVO selectedStationVO;
 	private final static String TAG = MainActivity.class.getName();
@@ -172,9 +172,9 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 		update();
 	}
 
-	public long getLastUpdate() {
+	/*public long getLastUpdate() {
 		return mLastUpdateMillis;
-	}
+	}*/
 
 	private void init() {
 		mFragments = new Updatable[Tabs.values().length];
@@ -188,7 +188,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				mLastUpdateMillis = Calendar.getInstance().getTimeInMillis();
+				//mLastUpdateMillis = Calendar.getInstance().getTimeInMillis();
 				onHandleUpdateMessage();
 				//Toast.makeText(MainActivity.this, R.string.toast_service_updated, Toast.LENGTH_LONG).show();
 				setWorking(false);

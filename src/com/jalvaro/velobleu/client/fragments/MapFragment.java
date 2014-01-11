@@ -1,8 +1,11 @@
 package com.jalvaro.velobleu.client.fragments;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -46,11 +49,10 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	private TextView streetText;
 	private TextView freeSlotsText;
 	private TextView occupiedSlotsText;
-	// private TextView disabledSlotsText;
 	private MyCheckBox favCheckBox;
 	private TextView lastUpdateMillisText;
-	private Handler mHandler;
-	private Runnable mRunnable;
+	private Handler mMinutesHandler;
+	private Runnable mMinutesRunnable;
 	private int currentMarkerId = Constants.INIT_VALUE;
 	private static View rootView;
 	private MainActivity activity;
@@ -82,27 +84,21 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	public void onResume() {
 		super.onResume();
 		addStations();
-		showLastUpdate();
-		/*
-		 * if (currentMarkerId != Constants.INIT_VALUE) {
-		 * showMarkerInfo(currentMarkerId);
-		 * }
-		 */
-		// decideWhereToCenterMap();
-		startUpdatingStatusLayout();
+		showLastMinutesUpdate();
+		startUpdatingMinutesLayout();
 		locateMeOnResume();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		stopUpdatingStatusLayout();
+		stopUpdatingMinutesLayout();
 	}
 
 	@Override
 	public void onHandleUpdateMessage() {
 		addStations();
-		showLastUpdate();
+		showLastMinutesUpdate();
 		if (currentMarkerId != Constants.INIT_VALUE) {
 			showMarkerInfo(currentMarkerId);
 		}
@@ -122,8 +118,6 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		freeSlotsText = (TextView) rootView.findViewById(R.id.freeSlotsText);
 		occupiedSlotsText = (TextView) rootView.findViewById(R.id.occupiedSlotsText);
 		favCheckBox = (MyCheckBox) rootView.findViewById(R.id.fav_check);
-		// disabledSlotsText = (TextView)
-		// rootView.findViewById(R.id.disabledSlotsText);
 		lastUpdateMillisText = (TextView) rootView.findViewById(R.id.lastUpdateMillisText);
 
 		listener = new OnMyLocationChangeListener() {
@@ -212,25 +206,33 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		}
 	}
 
-	private void showLastUpdate() {
+	private void showLastMinutesUpdate() {
 		if (activity != null) {
-			long lastUpdateMillis = activity.getLastUpdate();
-			if (lastUpdateMillis != Constants.INIT_VALUE) {
-				Calendar cal = Calendar.getInstance();
-				long diff = cal.getTimeInMillis() - lastUpdateMillis;
+			FleetVO fleetVO = ((VeloApp) activity.getApplication()).getFleetVO();
+			
+			if (fleetVO != null) {
+				SimpleDateFormat formatter = new SimpleDateFormat(Constants.JSON_TIME_FORMATTER, Locale.getDefault());
+				try {
+					Calendar cal = Calendar.getInstance();
+					Calendar cal2 = Calendar.getInstance();
+					cal2.setTime(formatter.parse(fleetVO.getDate()));
+					long diff = cal.getTimeInMillis() - cal2.getTimeInMillis();
 
-				if (diff < 30 * Constants.SECOND) {
-					lastUpdateMillisText.setText(R.string.text_just_now);
-				} else if (diff < Constants.MINUTE) {
-					lastUpdateMillisText.setText(R.string.text_more_30_sec);
-				} else if (diff < 2 * Constants.MINUTE) {
-					lastUpdateMillisText.setText(R.string.text_1_minute_ago);
-				} else if (diff < Constants.HOUR) {
-					lastUpdateMillisText.setText(getString(R.string.text_x_minutes_ago, diff / Constants.MINUTE));
-				} else {
-					cal.setTimeInMillis(lastUpdateMillis);
-					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-					lastUpdateMillisText.setText(dateFormat.format(cal.getTime()));
+					if (diff < 30 * Constants.SECOND) {
+						lastUpdateMillisText.setText(R.string.text_just_now);
+					} else if (diff < Constants.MINUTE) {
+						lastUpdateMillisText.setText(R.string.text_more_30_sec);
+					} else if (diff < 2 * Constants.MINUTE) {
+						lastUpdateMillisText.setText(R.string.text_1_minute_ago);
+					} else if (diff < Constants.HOUR) {
+						lastUpdateMillisText.setText(getString(R.string.text_x_minutes_ago, diff / Constants.MINUTE));
+					} else {
+						SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ANDROID_TIME_FORMATTER, Locale.getDefault());
+						lastUpdateMillisText.setText(dateFormat.format(cal2.getTime()));
+					}
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
@@ -241,17 +243,17 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	 * actualitzar el temps que fa que s'ha sincronitzat amb el servidor.
 	 * Barra superior amb el temps en segons, minuts o hores...
 	 */
-	private void startUpdatingStatusLayout() {
-		mHandler = new Handler();
-		mRunnable = new Runnable() {
+	private void startUpdatingMinutesLayout() {
+		mMinutesHandler = new Handler();
+		mMinutesRunnable = new Runnable() {
 
 			@Override
 			public void run() {
-				showLastUpdate();
-				mHandler.postDelayed(mRunnable, Constants.STATUS_TEXT_MILLIS);
+				showLastMinutesUpdate();
+				mMinutesHandler.postDelayed(mMinutesRunnable, Constants.STATUS_TEXT_MILLIS);
 			}
 		};
-		mHandler.postDelayed(mRunnable, Constants.STATUS_TEXT_MILLIS);
+		mMinutesHandler.postDelayed(mMinutesRunnable, Constants.STATUS_TEXT_MILLIS);
 	}
 
 	/**
@@ -259,9 +261,9 @@ public class MapFragment extends SherlockFragment implements Updatable {
 	 * actualitzar el temps que fa que s'ha sincronitzat amb el servidor.
 	 * Barra superior amb el temps en segons, minuts o hores...
 	 */
-	private void stopUpdatingStatusLayout() {
-		if (mHandler != null) {
-			mHandler.removeCallbacks(mRunnable);
+	private void stopUpdatingMinutesLayout() {
+		if (mMinutesHandler != null) {
+			mMinutesHandler.removeCallbacks(mMinutesRunnable);
 		}
 	}
 
@@ -293,7 +295,5 @@ public class MapFragment extends SherlockFragment implements Updatable {
 		freeSlotsText.setText(getString(R.string.text_free_slots, stationVO.getTotalFreeSlots()));
 		occupiedSlotsText.setText(getString(R.string.text_occupied_slots, stationVO.getTotalOccupiedSlots()));
 		favCheckBox.fill(stationVO.getId(), stationVO.isFavourite(), activity.getOnCheckedChangedListener());
-		// disabledSlotsText.setText(getString(R.string.text_disabled_slots,
-		// stationVO.getDisabledSlots()));
 	}
 }

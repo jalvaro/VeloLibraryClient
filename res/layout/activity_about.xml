@@ -9,13 +9,60 @@
     tools:context=".AboutActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/about_developed_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:text="@string/text_about"
+        android:text="@string/text_about_developed"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/about_icons_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerInParent="true"
+        android:gravity="center|bottom"
+        android:text="@string/text_about_icons"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_icons_textView"
+        android:layout_alignLeft="@+id/about_icons_textView"
+        android:gravity="center|bottom"
+        android:text="@string/text_about_year"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_developed_textView"
+        android:layout_centerHorizontal="true" >
+
+        <ImageView
+            android:id="@+id/about_linkedin_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/linkedin" />
+
+        <ImageView
+            android:id="@+id/about_gmail_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/gmail" />
+
+    </LinearLayout>
 
 </RelativeLayout>

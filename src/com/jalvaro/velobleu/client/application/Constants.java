@@ -27,4 +27,8 @@ public final class Constants {
 	
 	// Resources Id
 //	public static final int RES_ID_NULL = -1;
+	
+	// Json timezone and time representation
+	public static final String JSON_TIME_FORMATTER = "MM/dd/yy HH:mm:ss";
+	public static final String ANDROID_TIME_FORMATTER = "dd/MM/yyyy HH:mm";
 }

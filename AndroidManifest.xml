@@ -30,7 +30,7 @@
 
     <application
         android:name="com.jalvaro.velobleu.client.application.VeloApp"
-        android:icon="@drawable/ic_launcher2"
+        android:icon="@drawable/ic_launcher3"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.jalvaro.velobleu.client.activities.MainActivity"
@@ -54,7 +54,9 @@
 
         <activity
             android:name="com.jalvaro.velobleu.client.activities.AboutActivity"
-            android:label="@string/title_activity_about" >
+            android:label="@string/title_activity_about"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

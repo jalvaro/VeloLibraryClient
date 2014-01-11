@@ -1,7 +1,12 @@
 package com.jalvaro.velobleu.client.io;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import android.util.Log;
 
+import com.jalvaro.velobleu.client.application.Constants;
 import com.jalvaro.velobleu.client.exceptions.VeloException;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.utils.CRUDUtils;
@@ -18,7 +23,8 @@ public class VeloApi {
 
 		try {
 			fleetVO = CRUDUtils.getGson(URL_1);
-			// fleetVO.copyValues(fleetVOResponse);
+			SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.JSON_TIME_FORMATTER, Locale.getDefault());
+			fleetVO.setDate(dateFormat.format(Calendar.getInstance().getTime()));
 		} catch (Exception e) {
 			// Error
 			Log.e(TAG, "getDevices - " + e.getMessage(), e);
