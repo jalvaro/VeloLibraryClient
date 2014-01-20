@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">VéloBleu</string>
+    <string name="app_name">Vélo Blue</string>
     <string name="menu_update">Actualitzar</string>
     <string name="menu_about">Saber-ne més</string>
     <string name="title_tab_map">Mapa</string>
@@ -11,7 +11,7 @@
     <string name="text_about_developed">Desenvolupada per \n Jordi Alvaro Arqués</string>
     <string name="text_about_vicing_url">https://play.google.com/store/apps/details?id=cat.pipo.bicing.android.rbls.barcelona</string>
     <string name="text_about_year">Gener 2014</string>
-    <string name="text_about_icons">Icones obtingudes de Vicing.</string>
+    <string name="text_about_icons">Gràcies a Vicing per deixar-me usar les seves icones!</string>
     <string name="text_about_vicing">Vicing</string>
     <string name="text_about_linkedin_url">http://linkedin.com/in/jordialvaro/</string>
     <string name="text_about_gmail_url">jordi.alvaro.arques@gmail.com</string>
