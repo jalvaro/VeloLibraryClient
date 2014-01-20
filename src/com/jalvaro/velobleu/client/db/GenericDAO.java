@@ -31,13 +31,13 @@ public abstract class GenericDAO<T> implements GenericInterfaceDAO<T> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public long insertAndUpdate(T o) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public long deleteAll() throws VeloException {
 		// TODO Auto-generated method stub
@@ -63,7 +63,7 @@ public abstract class GenericDAO<T> implements GenericInterfaceDAO<T> {
 	}
 
 	@Override
-	public boolean enableBDD() {
+	public synchronized boolean enableBDD() {
 		if (dbHelper == null)
 			dbHelper = new DatabaseHelper(context);
 		db = dbHelper.getWritableDatabase();
@@ -72,15 +72,19 @@ public abstract class GenericDAO<T> implements GenericInterfaceDAO<T> {
 	}
 
 	@Override
-	public boolean closeBDD() {
+	public synchronized boolean closeBDD() {
 		if (db.inTransaction())
 			db.endTransaction();
-		db.close();
+
+		if (db.isOpen()) {
+			db.close();
+		}
 
 		return true;
 	}
 
 	abstract Object loadFromCursor(Cursor c);
+
 	abstract ContentValues setBddContent(T o);
 
 }
