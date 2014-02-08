@@ -55,7 +55,7 @@ public class CRUDUtils {
 		Log.d(TAG, "simpleGet - result: " + result);
 	}
 
-	public static void get(String url) {
+	public static String get(String url) {
 		Log.d(TAG, "simpleGet - url: " + url);
 
 		HttpHeaders requestHeaders = new HttpHeaders();
@@ -66,33 +66,37 @@ public class CRUDUtils {
 		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
 
 		Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
+
+		return responseEntity.getBody();
 	}
-/*
-	public static DeviceVO[] getArrayGson(String url, String cookie) {
-		Log.d(TAG, "simpleGet - url: " + url);
-		Log.d(TAG, "simpleGet - cookie: " + cookie);
 
-		// Set the Accept header
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(new MediaType("application", "json"));
-		requestHeaders.add("cookie", cookie);
-		HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
-
-		// Create a new RestTemplate instance
-		RestTemplate restTemplate = new RestTemplate();
-
-		// Add the Gson message converter
-		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-
-		// Make the HTTP GET request
-		ResponseEntity<DeviceVO[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, DeviceVO[].class);
-		DeviceVO[] devices = responseEntity.getBody();
-
-		Log.d(TAG, "simpleGet - result: " + devices.length);
-
-		return devices;
-	}
-*/	
+	/*
+	 * public static DeviceVO[] getArrayGson(String url, String cookie) {
+	 * Log.d(TAG, "simpleGet - url: " + url);
+	 * Log.d(TAG, "simpleGet - cookie: " + cookie);
+	 * 
+	 * // Set the Accept header
+	 * HttpHeaders requestHeaders = new HttpHeaders();
+	 * requestHeaders.setContentType(new MediaType("application", "json"));
+	 * requestHeaders.add("cookie", cookie);
+	 * HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+	 * 
+	 * // Create a new RestTemplate instance
+	 * RestTemplate restTemplate = new RestTemplate();
+	 * 
+	 * // Add the Gson message converter
+	 * restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+	 * 
+	 * // Make the HTTP GET request
+	 * ResponseEntity<DeviceVO[]> responseEntity = restTemplate.exchange(url,
+	 * HttpMethod.GET, requestEntity, DeviceVO[].class);
+	 * DeviceVO[] devices = responseEntity.getBody();
+	 * 
+	 * Log.d(TAG, "simpleGet - result: " + devices.length);
+	 * 
+	 * return devices;
+	 * }
+	 */
 	public static FleetVO getGson(String url) {
 		Log.d(TAG, "simpleGet - url: " + url);
 
@@ -110,33 +114,38 @@ public class CRUDUtils {
 		// Make the HTTP GET request
 		ResponseEntity<FleetVO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, FleetVO.class);
 		FleetVO fleetVO = responseEntity.getBody();
-		
+
 		Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
 
 		return fleetVO;
 	}
-/*
-	public static void putGson(String url, String cookie, DeviceVO deviceVO) {
-		Log.d(TAG, "postGson - url: " + url);
-		Log.d(TAG, "postGson - cookie: " + cookie);
-
-		// Set the Content-Type header
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(new MediaType("application", "json"));
-		requestHeaders.add("cookie", cookie);
-		HttpEntity<DeviceVO> requestEntity = new HttpEntity<DeviceVO>(deviceVO, requestHeaders);
-
-		// Create a new RestTemplate instance
-		RestTemplate restTemplate = new RestTemplate();
-
-		// Add the Jackson and String message converters
-		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-
-		// Make the HTTP POST request, marshaling the request to JSON, and the
-		// response to a String
-		ResponseEntity<Object> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Object.class);
-
-		Log.d(TAG, "postGson - result: " + responseEntity.getBody());
-	}*/
+	/*
+	 * public static void putGson(String url, String cookie, DeviceVO deviceVO)
+	 * {
+	 * Log.d(TAG, "postGson - url: " + url);
+	 * Log.d(TAG, "postGson - cookie: " + cookie);
+	 * 
+	 * // Set the Content-Type header
+	 * HttpHeaders requestHeaders = new HttpHeaders();
+	 * requestHeaders.setContentType(new MediaType("application", "json"));
+	 * requestHeaders.add("cookie", cookie);
+	 * HttpEntity<DeviceVO> requestEntity = new HttpEntity<DeviceVO>(deviceVO,
+	 * requestHeaders);
+	 * 
+	 * // Create a new RestTemplate instance
+	 * RestTemplate restTemplate = new RestTemplate();
+	 * 
+	 * // Add the Jackson and String message converters
+	 * restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+	 * restTemplate.getMessageConverters().add(new
+	 * StringHttpMessageConverter());
+	 * 
+	 * // Make the HTTP POST request, marshaling the request to JSON, and the
+	 * // response to a String
+	 * ResponseEntity<Object> responseEntity = restTemplate.exchange(url,
+	 * HttpMethod.PUT, requestEntity, Object.class);
+	 * 
+	 * Log.d(TAG, "postGson - result: " + responseEntity.getBody());
+	 * }
+	 */
 }

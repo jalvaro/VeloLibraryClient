@@ -3,7 +3,7 @@ package com.jalvaro.velobleu.client.asynctasks;
 import com.jalvaro.velobleu.client.application.VeloApp;
 import com.jalvaro.velobleu.client.controllers.Controller.VeloCallback;
 import com.jalvaro.velobleu.client.exceptions.VeloException;
-import com.jalvaro.velobleu.client.io.VeloApi;
+import com.jalvaro.velobleu.client.io.Api;
 
 public class UpdateAsyncTask extends VeloAsyncTask {
 
@@ -15,6 +15,7 @@ public class UpdateAsyncTask extends VeloAsyncTask {
 
 	@Override
 	protected void doInBackgroundToImplement(String... params) throws VeloException {
-		getApplication().setFleetVO(VeloApi.getFleet());
+		Api veloApi = ((VeloApp) getApplication()).getVeloApi();
+		getApplication().setFleetVO(veloApi.getFleet());
 	}
 }

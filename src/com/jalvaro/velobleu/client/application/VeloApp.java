@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.jalvaro.velobleu.client.exceptions.VeloException;
+import com.jalvaro.velobleu.client.io.Api;
 import com.jalvaro.velobleu.client.models.FleetVO;
 import com.jalvaro.velobleu.client.models.StationVO;
 import com.jalvaro.velobleu.client.storage.DatabaseManager;
@@ -14,6 +15,7 @@ public class VeloApp extends Application {
 	private FleetVO fleetVO;
 	private FleetVO favouriteFleetVO;
 	private StorageManager storeManager;
+	private Api veloApi;
 
 	public VeloApp() {
 		super();
@@ -98,5 +100,13 @@ public class VeloApp extends Application {
 			storeManager.deleteFavouriteStation(stationVO);
 			//this.favouriteFleetVO = storeManager.getFavouriteFleet();
 		}
+	}
+	
+	public Api getVeloApi() {
+		return veloApi;
+	}
+	
+	public void setVeloApi(Api veloApi) {
+		this.veloApi = veloApi;
 	}
 }
