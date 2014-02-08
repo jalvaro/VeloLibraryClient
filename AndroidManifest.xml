@@ -5,7 +5,7 @@
     android:versionName="1.1" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
 
     <uses-feature
@@ -31,6 +31,7 @@
     <application
         android:name="com.jalvaro.velobleu.client.application.VeloBleuApp"
         android:icon="@drawable/ic_launcher3"
+        android:allowBackup="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.jalvaro.velobleu.client.activities.MainActivity"

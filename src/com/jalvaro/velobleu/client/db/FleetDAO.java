@@ -56,7 +56,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 
 	/* Methods to CRUD */
 	@Override
-	public long insert(FleetVO fleetVO) throws VeloException {
+	public synchronized long insert(FleetVO fleetVO) throws VeloException {
 		long gid = 0;
 		Log.i("BDD - " + TAG, "START INSERT - Insert record in table: " + TABLE);
 
@@ -77,8 +77,6 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 			Log.e("BDD - " + TAG, "Insert error ", e);
 			throw new VeloException(VeloException.VELOBLEU_EXCEPTION_BDD_ERROR);
 		} finally {
-			db.endTransaction();
-
 			/* Close BDD */
 			closeBDD();
 		}
@@ -88,7 +86,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 	}
 
 	@Override
-	public long update(FleetVO fleetVO) throws VeloException {
+	public synchronized long update(FleetVO fleetVO) throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START UPDATE - Update records in table: " + TABLE);
 
@@ -107,8 +105,6 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 			Log.e("BDD - " + TAG, "Insert error ", e);
 			throw new VeloException(VeloException.VELOBLEU_EXCEPTION_BDD_ERROR);
 		} finally {
-			db.endTransaction();
-
 			/* Close BDD */
 			closeBDD();
 		}
@@ -118,7 +114,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 	}
 
 	@Override
-	public long deleteAll() throws VeloException {
+	public synchronized long deleteAll() throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START DELETE_ALL- Delete all records in table: " + TABLE);
 
@@ -140,7 +136,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 	}
 
 	@Override
-	public long delete(String id) throws VeloException {
+	public synchronized long delete(String id) throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START DELETE - Delete record " + id + " in table: " + TABLE);
 
@@ -163,7 +159,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 	}
 
 	@Override
-	public List<FleetVO> getAll() throws VeloException {
+	public synchronized List<FleetVO> getAll() throws VeloException {
 		List<FleetVO> result = new ArrayList<FleetVO>();
 		Log.i("BDD - " + TAG, "START GET_ALL - Get all records in table: " + TABLE);
 
@@ -198,7 +194,7 @@ public class FleetDAO extends GenericDAO<FleetVO> {
 	}
 
 	@Override
-	public FleetVO get(String id) throws VeloException {
+	public synchronized FleetVO get(String id) throws VeloException {
 		FleetVO fleetVO = null;
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START GET - Get record " + id + " in table: " + TABLE);

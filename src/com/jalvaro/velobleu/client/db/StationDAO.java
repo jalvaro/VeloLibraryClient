@@ -66,7 +66,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 
 	/* Methods to CRUD */
 	@Override
-	public long insert(StationVO stationVO) throws VeloException {
+	public synchronized long insert(StationVO stationVO) throws VeloException {
 		Log.i("BDD - " + TAG, "START INSERT - Insert record in table: " + getTableName());
 		long gid = 0;
 
@@ -87,8 +87,6 @@ public class StationDAO extends GenericDAO<StationVO> {
 			Log.e("BDD - " + TAG, "Insert error ", e);
 			throw new VeloException(VeloException.VELOBLEU_EXCEPTION_BDD_ERROR);
 		} finally {
-			db.endTransaction();
-
 			/* Close BDD */
 			closeBDD();
 		}
@@ -97,7 +95,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 		return gid;
 	}
 
-	public long insert(StationVO[] stationsVO) throws VeloException {
+	public synchronized long insert(StationVO[] stationsVO) throws VeloException {
 		Log.i("BDD - " + TAG, "START INSERT - Insert record in table: " + getTableName());
 		long rows = 0;
 		long rowId = 0;
@@ -123,8 +121,6 @@ public class StationDAO extends GenericDAO<StationVO> {
 			Log.e("BDD - " + TAG, "Insert error ", e);
 			throw new VeloException(VeloException.VELOBLEU_EXCEPTION_BDD_ERROR);
 		} finally {
-			db.endTransaction();
-
 			/* Close BDD */
 			closeBDD();
 		}
@@ -134,7 +130,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 	}
 
 	@Override
-	public long update(StationVO stationVO) throws VeloException {
+	public synchronized long update(StationVO stationVO) throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START UPDATE - Update records in table: " + getTableName());
 
@@ -153,8 +149,6 @@ public class StationDAO extends GenericDAO<StationVO> {
 			Log.e("BDD - " + TAG, "Insert error ", e);
 			throw new VeloException(VeloException.VELOBLEU_EXCEPTION_BDD_ERROR);
 		} finally {
-			db.endTransaction();
-
 			/* Close BDD */
 			closeBDD();
 		}
@@ -164,7 +158,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 	}
 
 	@Override
-	public long deleteAll() throws VeloException {
+	public synchronized long deleteAll() throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START DELETE_ALL- Delete all records in table: " + getTableName());
 
@@ -186,7 +180,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 	}
 
 	@Override
-	public long delete(String id) throws VeloException {
+	public synchronized long delete(String id) throws VeloException {
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START DELETE - Delete record " + id + " in table: " + getTableName());
 
@@ -209,7 +203,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 	}
 
 	@Override
-	public List<StationVO> getAll() throws VeloException {
+	public synchronized List<StationVO> getAll() throws VeloException {
 		List<StationVO> result = new ArrayList<StationVO>();
 		Log.i("BDD - " + TAG, "START GET_ALL - Get all records in table: " + getTableName());
 
@@ -244,7 +238,7 @@ public class StationDAO extends GenericDAO<StationVO> {
 	}
 
 	@Override
-	public StationVO get(String id) throws VeloException {
+	public synchronized StationVO get(String id) throws VeloException {
 		StationVO stationVO = null;
 		long rows = 0;
 		Log.i("BDD - " + TAG, "START GET - Get record " + id + " in table: " + getTableName());
