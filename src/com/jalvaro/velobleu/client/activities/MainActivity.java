@@ -208,7 +208,7 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				onHandleUpdateMessage();
-				//Toast.makeText(MainActivity.this, "Se ha a–adido en favs.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MainActivity.this, "Se ha aï¿½adido en favs.", Toast.LENGTH_LONG).show();
 				setWorking(false);
 			}
 
@@ -355,15 +355,12 @@ public class MainActivity extends SherlockFragmentActivity implements TabListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(TAG, "item selected: " + item.getItemId());
-		switch (item.getItemId()) {
-		case R.id.menu_update:
+		int itemId = item.getItemId();
+		if (itemId == R.id.menu_update) {
 			update();
-			break;
-		case R.id.menu_about:
+		} else if (itemId == R.id.menu_about) {
 			Controller.startAboutActivity(this);
-			break;
-		default:
-			break;
+		} else {
 		}
 		return false;
 	}
