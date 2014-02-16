@@ -1,0 +1,7 @@
+<resources>
+
+    <integer name="zoom_map">15</integer>
+    <item type="string" format="float" name="lat_map_center">0.0</item>
+    <item type="string" format="float" name="lng_map_center">0.0</item>
+
+</resources>

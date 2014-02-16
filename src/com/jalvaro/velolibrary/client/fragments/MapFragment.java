@@ -121,17 +121,24 @@ public class MapFragment extends SherlockFragment implements Updatable {
 
 			@Override
 			public void onMyLocationChange(Location loc) {
-				moveCamera(new LatLng(loc.getLatitude(), loc.getLongitude()), Constants.ZOOM);
+				moveCamera(new LatLng(loc.getLatitude(), loc.getLongitude()));
 
 				map.setOnMyLocationChangeListener(null);
 			}
 		};
 
-		centerInNice();
+		centerInMap();
 	}
 
-	private void centerInNice() {
-		moveCamera(new LatLng(Constants.LAT_NICE_CENTER, Constants.LON_NICE_CENTER), Constants.ZOOM);
+	private void centerInMap() {
+		double latMapCenter = Double.parseDouble(getResources().getString(R.string.lat_map_center));
+		double lngMapCenter = Double.parseDouble(getResources().getString(R.string.lng_map_center));
+		moveCamera(new LatLng(latMapCenter, lngMapCenter));
+	}
+	
+	private void moveCamera(LatLng latlng) {
+		int zoomMap = getResources().getInteger(R.integer.zoom_map);
+		moveCamera(latlng, zoomMap);
 	}
 
 	private void moveCamera(LatLng latlng, int zoomInt) {
@@ -149,12 +156,12 @@ public class MapFragment extends SherlockFragment implements Updatable {
 				showMarkerInfo(selectedStationVO.getId());
 				activity.setSelectedStation(null);
 				LatLng latLng = new LatLng(selectedStationVO.getLatitude(), selectedStationVO.getLongitude());
-				moveCamera(latLng, Constants.ZOOM);
+				moveCamera(latLng);
 			} else if (currentMarkerId != Constants.INIT_VALUE) {
 				showMarkerInfo(currentMarkerId);
 				StationVO stationVO = ((VeloApp) activity.getApplication()).getFleetVO().getStationById(currentMarkerId);
 				LatLng latLng = new LatLng(stationVO.getLatitude(), stationVO.getLongitude());
-				moveCamera(latLng, Constants.ZOOM);
+				moveCamera(latLng);
 			} else {
 				locateMe();
 			}

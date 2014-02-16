@@ -16,9 +16,10 @@ public final class Constants {
 	public static final String BROADCAST_LOGOUT = "BROADCAST_LOGOUT";
 	
 	// Map
-	public static final int ZOOM = 15;
-	public static final double LAT_NICE_CENTER = 43.699729;
-	public static final double LON_NICE_CENTER = 7.266405;
+	/* Moved to resources */
+	//public static final int ZOOM = 15;
+	//public static final double LAT_NICE_CENTER = 43.699729;
+	//public static final double LON_NICE_CENTER = 7.266405;
 	public static final int INIT_VALUE = -100;
 	public static final int SECOND = 1000;
 	public static final int MINUTE = 60*SECOND;
