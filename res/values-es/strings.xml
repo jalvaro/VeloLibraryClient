@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Vélo Blue</string>
+    <string name="app_name">Vélo Library</string>
     <string name="menu_update">Actualizar</string>
     <string name="menu_about">Acerca de</string>
     <string name="title_tab_map">Mapa</string>
@@ -21,8 +21,8 @@
     <string name="toast_service_updated">Estado actualitzado!</string>
     <string name="toast_service_not_updated">No ha sido posible actualizar el estado de las estaciones.</string>
     <string name="text_last_update">Última actualización:</string>
-    <string name="text_just_now">Ahora mismo...</string>
-    <string name="text_more_30_sec">Hace más de 30 segundos...</string>
+    <string name="text_just_now">Ahora mismo</string>
+    <string name="text_more_30_sec">Hace más de 30 segundos</string>
     <string name="text_1_minute_ago">Hace 1 minuto</string>
     <string name="text_x_minutes_ago">Hace %1$d minutos</string>
 

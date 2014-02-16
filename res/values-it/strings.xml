@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Vélo Library</string>
+    <string name="menu_update">Aggiorna</string>
+    <string name="menu_about">Informazioni su...</string>
+    <string name="title_tab_map">Mappa</string>
+    <string name="title_tab_fav">Preferiti</string>
+    <string name="title_tab_stations">Stazioni</string>
+    <string name="title_activity_about">Informazioni su...</string>
+    <string name="text_about_developed">Sviluppato da \n Jordi Alvaro Arqués</string>
+    <string name="text_about_vicing_url">https://play.google.com/store/apps/details?id=cat.pipo.bicing.android.rbls.barcelona</string>
+    <string name="text_about_year">Gennaio 2014</string>
+    <string name="text_about_icons">Ringrazio Vicing per avermi fatto utilizzare le loro icone.</string>
+    <string name="text_about_vicing">Vicing</string>
+    <string name="text_about_linkedin_url">http://linkedin.com/in/jordialvaro/</string>
+    <string name="text_about_gmail_url">jordi.alvaro.arques@gmail.com</string>
+    <string name="text_free_slots">Liberi: %1$d</string>
+    <string name="text_occupied_slots">Occupati: %1$d</string>
+    <string name="text_disabled_slots">Disabilitati: %1$d</string>
+    <string name="toast_service_updated">Stato aggiornato!</string>
+    <string name="toast_service_not_updated">Impossibile aggiornare lo stato.</string>
+    <string name="text_last_update">Ultimo aggiornamento:</string>
+    <string name="text_just_now">Adesso</string>
+    <string name="text_more_30_sec">Più di 30 secondi fa</string>
+    <string name="text_1_minute_ago">1 minuto fa</string>
+    <string name="text_x_minutes_ago">%1$d minuti fa</string>
+
+</resources>
