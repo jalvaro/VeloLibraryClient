@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import android.util.Log;
 
+import com.jalvaro.velolibrary.client.exceptions.VeloException;
 import com.jalvaro.velolibrary.client.models.FleetVO;
 
 public class CRUDUtils {
@@ -55,19 +56,25 @@ public class CRUDUtils {
 		Log.d(TAG, "simpleGet - result: " + result);
 	}
 
-	public static String get(String url) {
+	public static String get(String url) throws VeloException {
 		Log.d(TAG, "simpleGet - url: " + url);
+		String body = "";
 
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(new MediaType("application", "json"));
-		HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+		try {
+			HttpHeaders requestHeaders = new HttpHeaders();
+			requestHeaders.setContentType(new MediaType("application", "json"));
+			HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
 
-		Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
-
-		return responseEntity.getBody();
+			Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
+			body = responseEntity.getBody();
+		} catch (Exception e) {
+			Log.e(TAG, "get - " + e.getMessage(), e);
+			throw (new VeloException(VeloException.VELO_EXCEPTION_SERVER_ERROR));
+		}
+		return body;
 	}
 
 	/*
@@ -97,25 +104,31 @@ public class CRUDUtils {
 	 * return devices;
 	 * }
 	 */
-	public static FleetVO getGson(String url) {
+	public static FleetVO getGson(String url) throws VeloException {
 		Log.d(TAG, "simpleGet - url: " + url);
+		FleetVO fleetVO = null;
 
-		// Set the Accept header
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(new MediaType("application", "json"));
-		HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+		try {
+			// Set the Accept header
+			HttpHeaders requestHeaders = new HttpHeaders();
+			requestHeaders.setContentType(new MediaType("application", "json"));
+			HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
 
-		// Create a new RestTemplate instance
-		RestTemplate restTemplate = new RestTemplate();
+			// Create a new RestTemplate instance
+			RestTemplate restTemplate = new RestTemplate();
 
-		// Add the Gson message converter
-		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+			// Add the Gson message converter
+			restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
-		// Make the HTTP GET request
-		ResponseEntity<FleetVO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, FleetVO.class);
-		FleetVO fleetVO = responseEntity.getBody();
+			// Make the HTTP GET request
+			ResponseEntity<FleetVO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, FleetVO.class);
+			fleetVO = responseEntity.getBody();
 
-		Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
+			Log.d(TAG, "simpleGet - result: " + responseEntity.getBody());
+		} catch (Exception e) {
+			Log.e(TAG, "getGson - " + e.getMessage(), e);
+			throw (new VeloException(VeloException.VELO_EXCEPTION_SERVER_ERROR));
+		}
 
 		return fleetVO;
 	}
